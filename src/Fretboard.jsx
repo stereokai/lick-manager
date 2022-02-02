@@ -20,10 +20,7 @@ const useFretboard = (figureRef, opts) => {
   return fretboard;
 };
 const options = { tom: 10 }
-function FretboardJSX() {
-  const [dots, setDots] = useState([])
-
-
+const FretboardJSX = ({ dots, setDots }) => {
 
   const figureRef = useRef(null);
 
