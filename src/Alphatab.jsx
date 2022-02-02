@@ -1,26 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from 'react';
 
-const useAlphaTab = (divRef, opts) => {
-  const [alphaTab, setAlphaTab] = useState(() => {});
-  useEffect(() => {
-      const el = divRef.current;
-      if (!el) {
-        return;
-      }
-      const settings = new Settings()
-      const alphaTab = new AlphaTabApi(el, settings);
-      setAlphaTab(alphaTab);
-      // alphaTab.render();
-      return () => {
-          // alphaTab.removeEventListeners();
-          // alphaTab.clear();
-          // el && Array.from(el.children).forEach((child) => child.remove());
-      };
-  }, [divRef, opts]);
-  return alphaTab;
-};
-
 const options = {
   core: {
     tex: true

@@ -1,5 +1,6 @@
-import { useEffect, useReducer } from "react";
-import AlphaTab from "./Alphatab.jsx";
+import { useReducer } from "react";
+import BoundsLookupViewer from "./BoundsLookupViewer.jsx";
+// import AlphaTab from "./Alphatab.jsx";
 import { Fretboard } from "./Fretboard.jsx";
 
 function dotsReducer(dots, action) {
@@ -24,7 +25,8 @@ const App = () => {
   return (
     <div className="flex flex-col min-h-screen bg-red-300">
       <div className="flex-grow bg-white m-5">
-        <AlphaTab dots={dots} />
+        {/* <AlphaTab dots={dots} /> */}
+        <BoundsLookupViewer dots={dots} tex="true" tracks="all"></BoundsLookupViewer>
       </div>
       <div className="flex-shrink bg-white m-5">
         <Fretboard dots={dots} setDots={setDots} />
