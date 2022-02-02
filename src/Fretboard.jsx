@@ -28,17 +28,16 @@ const FretboardJSX = ({ dots, setDots }) => {
   useEffect(() => {
     try {
       fretboard.on("mousemove", position => {
-        setDots(dots => [...dots
-          .filter((x) => !x.moving), { ...position, moving: true }])
+        setDots({ dot: position, type: 'hover' });
       });
       fretboard.on("mouseleave", () => {
-        setDots(dots => [...dots.filter((x) => !x.moving)])
+        setDots({ type: 'clearHover' });
       });
       fretboard.on("dblclick", ({ string, fret }) => {
-        setDots(dots => [...dots.filter((x) => x.string !== string || x.fret !== fret)])
+        setDots({ string, fret, type: 'removeDot' });
       });
       fretboard.on("click", position => {
-        setDots(dots => [...dots, position]);
+        setDots({ dot: position, type: 'addDot' });
       });
     } catch (error) {
 
@@ -67,4 +66,5 @@ const FretboardJSX = ({ dots, setDots }) => {
   )
 }
 
-export { FretboardJSX as Fretboard }
+export { FretboardJSX as Fretboard };
+
