@@ -1,6 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import React, { useEffect, useRef, useState } from "react";
-
+import AlphatabOverlay from "./AlphatabOverlay";
 const GuideType = {
   VisualBounds: 0,
   RealBounds: 1,
@@ -26,13 +26,14 @@ const BoundsLookupViewer = ({children, dots}) => {
 
 
   const [alphaTab, setAlphaTab] = useState(() => {});
+  const [boundsLookup, setBoundsLookup] = useState(() => {});
   useEffect(() => {
       const el = alphaTabRef.current;
       if (!el) {
         return;
       }
       const settings = new Settings()
-
+      settings.display.staveProfile = 3;
       // const alphaTab = ;
       if (alphaTab) {
         alphaTab.destroy();
@@ -93,10 +94,11 @@ const BoundsLookupViewer = ({children, dots}) => {
     }
 
     if (alphaTab.renderer.boundsLookup) {
-      createStaveGroupGuides(
-        guidesWrapper,
-        alphaTab.renderer.boundsLookup
-      );
+      setBoundsLookup(alphaTab.renderer.boundsLookup)
+      // createStaveGroupGuides(
+      //   guidesWrapper,
+      //   alphaTab.renderer.boundsLookup
+      // );
     }
   }
 
@@ -192,64 +194,17 @@ const BoundsLookupViewer = ({children, dots}) => {
 
     return (
       <div>
-        <div className="btn-toolbar" role="toolbar">
-          <div className="btn-group mr-2" role="group">
-            <button
-              type="button"
-              className={
-                "btn btn-secondary" + typeClass(GuideType.VisualBounds)
-              }
-              onClick={() => setType(GuideType.VisualBounds)}
-            >
-              Visual Bounds
-            </button>
-            <button
-              type="button"
-              className={
-                "btn btn-secondary" + typeClass(GuideType.RealBounds)
-              }
-              onClick={() => setType(GuideType.RealBounds)}
-            >
-              Real Bounds
-            </button>
-          </div>
-          <div className="btn-group mr-2" role="group">
-            <button
-              type="button"
-              onClick={() => setElements(GuideElements.StaveGroups)}
-            >
-              Stave Groups
-            </button>
-            <button
-              type="button"
-              onClick={() => setElements(GuideElements.MasterBars)}
-            >
-              Master Bars
-            </button>
-            <button
-              type="button"
-              onClick={() => setElements(GuideElements.Bars)}
-            >
-              Bars
-            </button>
-            <button
-              type="button"
-              onClick={() => setElements(GuideElements.Beats)}
-            >
-              Beats
-            </button>
-            <button
-              type="button"
-              onClick={() => setElements(GuideElements.Notes)}
-            >
-              Notes
-            </button>
-          </div>
-        </div>
-        <div
+        <div className="relative"
           ref={alphaTabRef}
         >
-          <p>{children}</p>
+          <AlphatabOverlay
+            boundsLookup={boundsLookup}
+            showStaveGroups={false}
+            showMasterBars={false}
+            showBars={false}
+            showBeats={true}
+            showNotes={false}
+          />
         </div>
       </div>
     );

@@ -1,6 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from 'react';
-
+import AlphatabOverlay from "./AlphatabOverlay";
 const options = {
   core: {
     tex: true
@@ -83,6 +83,8 @@ export default function AlphaTab ({dots}) {
 }, [dots])
 
   return (
-    <div ref={divRef}></div>
+    <div ref={divRef}>
+      <AlphatabOverlay />
+    </div>
   )
 }
