@@ -15,3 +15,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.at-surface > div:nth-last-child(2) {
+  display: none;
+}
+
+.at-surface-svg > g:first-child {
+  display: none;
+}
+
+.at-surface-svg > text:first-of-type {
+  display: none;
+}

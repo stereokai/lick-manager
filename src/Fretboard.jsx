@@ -20,6 +20,8 @@ const useFretboard = (figureRef, opts) => {
   return fretboard;
 };
 const options = { tom: 10 }
+const CLICK_TIMEOUT = 150;
+let lastClick = false
 const FretboardJSX = ({ dots, setDots }) => {
 
   const figureRef = useRef(null);
@@ -33,11 +35,22 @@ const FretboardJSX = ({ dots, setDots }) => {
       fretboard.on("mouseleave", () => {
         setDots({ type: 'clearHover' });
       });
-      fretboard.on("dblclick", ({ string, fret }) => {
-        setDots({ string, fret, type: 'removeDot' });
-      });
+      // fretboard.on("dblclick", ({ string, fret }) => {
+      //   setDots({ string, fret, type: 'removeDot' });
+      // });
       fretboard.on("click", position => {
-        setDots({ dot: position, type: 'addDot' });
+        if (lastClick) {
+          const { string, fret } = position;
+          clearTimeout(lastClick);
+          setDots({ string, fret, type: 'removeDot' });
+          lastClick = false;
+          return;
+        }
+
+        lastClick = setTimeout(() => {
+          setDots({ dot: position, type: 'addDot' });
+          lastClick = false;
+        }, CLICK_TIMEOUT)
       });
     } catch (error) {
 

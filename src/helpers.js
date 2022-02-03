@@ -1,57 +1,55 @@
+export const OverlayType = {
+  VisualBounds: 0,
+  RealBounds: 1,
+};
 
-export const createStaveGroupGuides = (wrapper, lookup) => {
-  for (const staveGroup of lookup.staveGroups) {
-    if (elements === GuideElements.StaveGroups) {
-      createGuide(wrapper, staveGroup, "#1976d2");
-    } else {
-      createMasterBarGuides(wrapper, staveGroup);
-    }
-  }
+export const STAVE_GROUPS_TYPE = 'StaveGroups';
+export const MASTER_BARS_TYPE = 'MasterBars';
+export const BARS_TYPE = 'Bars';
+export const BEATS_TYPE = 'Beats';
+export const NOTES_TYPE = 'Notes';
+
+export const ComponentGroups = {
+  [STAVE_GROUPS_TYPE]: 'staveGroups' ,
+  [MASTER_BARS_TYPE]: 'bars' ,
+  [BARS_TYPE]: 'bars' ,
+  [BEATS_TYPE]: 'beats' ,
+  [NOTES_TYPE]: 'notes' ,
+};
+
+const alphaTabComponentGroups = []
+for (let key in ComponentGroups) {
+  alphaTabComponentGroups.push({
+    name: key,
+    key: ComponentGroups[key]
+  })
 }
 
-export const createMasterBarGuides = (wrapper, staveGroup) => {
-  for (const masterBar of staveGroup.bars) {
-    if (elements === GuideElements.MasterBars) {
-      createGuide(wrapper, masterBar, "#388e3c");
-    } else {
-      createBarGuides(wrapper, masterBar);
+export function collectAlphaTabComponents(container, level, components = []) {
+  if (level < alphaTabComponentGroups.length) {
+    const nextContainer = container[alphaTabComponentGroups[level].key];
+
+    if (nextContainer) {
+      let index = 0;
+
+      for (const member of nextContainer) {
+        // Optimistically ignore duplicates (AlphaTab bug)
+        if (index && member.index <= index) {
+          continue;
+        }
+
+        components.push({
+          index: member.index,
+          bounds: member.visualBounds || member.noteHeadBounds,
+          type: alphaTabComponentGroups[level].name,
+          member
+        })
+        console.log(components[components.length - 1])
+        collectAlphaTabComponents(member, level + 1, components)
+        index++
+      }
     }
   }
-}
-
-export const createBarGuides = (wrapper, masterBar) => {
-  for (const bar of masterBar.bars) {
-    if (elements === GuideElements.Bars) {
-      createGuide(wrapper, bar, "#fdd835");
-    } else {
-      createBeatGuides(wrapper, bar);
-    }
-  }
-}
-
-export const createBeatGuides = (wrapper, bar) => {
-  for (const beat of bar.beats) {
-    if (elements === GuideElements.Beats) {
-      createGuide(wrapper, beat, "#e64a19");
-    } else {
-      createNoteGuides(wrapper, beat);
-    }
-  }
-}
-
-export const createNoteGuides = (wrapper, beat) => {
-  if (beat.notes) {
-    for (const note of beat.notes) {
-      createGuide(wrapper, note.noteHeadBounds, "#512da8");
-    }
-  }
-}
-
-export const hexToRgba = (hex, alpha) => {
-  let c = hex.substring(1).split("");
-  if (c.length == 3) {
-    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-  }
-  c = "0x" + c.join("");
-  return `rgba(${(c >> 16) & 255}, ${(c >> 8) & 255}, ${c & 255},${alpha})`;
+  window.cmps = components
+  return components;
 }
