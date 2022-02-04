@@ -1,28 +1,7 @@
 import { useReducer } from "react";
 import Alphatab from "./Alphatab/Alphatab.jsx";
+import { dotsReducer } from "./dotsReducer.jsx";
 import { Fretboard } from "./Fretboard.jsx";
-
-function dotsReducer(dots, action) {
-  switch (action.type) {
-    case "addDot":
-      return [...dots, action.dot];
-    case "removeDot":
-      return [
-        ...dots.filter(
-          (dot) => dot.string !== action.string || dot.fret !== action.fret
-        ),
-      ];
-    case "hover":
-      return [
-        ...dots.filter((dot) => !dot.moving),
-        { ...action.dot, moving: true },
-      ];
-    case "clearHover":
-      return [...dots.filter((dot) => !dot.moving)];
-    default:
-      return dots;
-  }
-}
 
 const App = () => {
   const [dots, setDots] = useReducer(dotsReducer, []);
