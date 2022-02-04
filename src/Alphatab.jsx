@@ -1,44 +1,12 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import AlphatabOverlay from "./AlphatabOverlay";
-const options = {
-  core: {
-    tex: true
-  },
-  display: {
-    staveProfile: "tab",
-    // resources: {
-    //    staffLineColor: "rgb(200, 10, 110)"
-    // }
-  },
-  notation: {
-    elements: {
-      scoreTitle: false,
-      scoreWordsAndMusic: false,
-      effectTempo: false,
-      guitarTuning: false
-    }
-  },
-  player: {
-    scrollMode: "off",
-    enablePlayer: true,
-    enableUserInteraction: true,
-    enableCursor: true
-  }
-}
-const json =JSON.stringify(options)
-
-// document.querySelector('#alphaTab').addEventListener('alphaTab.beatMouseDown', function(e) {
-// var beat = e.detail;
-// e.originalEvent.preventDefault();
-// console.log(beat)
-// }, false);
-
-// .tex(`:4 1.6 1.6 3.6 0.5 2.5 3.5 0.4 2.4 |
-//    3.4 0.3 2.3 0.2 1.2 3.2 0.1 1.1 |
-//    3.1.1`)
 
 function dotsToAlphaTex(dots) {
+  if (!dots.length) return `
+\\tempo 90
+.`;
+
   return dots
     .filter(dot => !dot.moving)
     .reduce((str, dot) => {
@@ -46,45 +14,68 @@ function dotsToAlphaTex(dots) {
   }, ':4')
 }
 
-export default function AlphaTab ({dots}) {
-
-  const divRef = useRef(null);
-
-
+const Alphatab = ({children, dots}) => {
+  const alphaTabRef = useRef(null);
   const [alphaTab, setAlphaTab] = useState(() => {});
+  const [boundsLookup, setBoundsLookup] = useState(() => {});
+
+  const updateAlphaTab = (tex) => {
+    alphaTab.tex(tex)
+  }
+
   useEffect(() => {
-      const el = divRef.current;
-      if (!el) {
-        return;
-      }
-      const settings = new Settings()
-      settings.fillFromJson(json)
-      // const alphaTab = ;
+      const el = alphaTabRef.current;
+      const settings = new Settings();
+
+      settings.display.staveProfile = 3;
       if (alphaTab) {
         alphaTab.destroy();
-        console.log('dest1')
       }
+
       setAlphaTab(new AlphaTabApi(el, Object.assign(settings, {})));
-      console.log('build')
-      // alphaTab.render();
+
       return () => {
-          // alphaTab.removeEventListeners();
+        if (alphaTab) {
           alphaTab.destroy();
-          console.log('dest2')
-          // el && Array.from(el.children).forEach((child) => child.remove());
+        }
       };
-  }, [divRef, options]);
+  }, [alphaTabRef]);
 
 
   useEffect(() => {
     if (alphaTab) {
-      alphaTab.tex(dotsToAlphaTex(dots))
-    }
-}, [dots])
+      alphaTab.postRenderFinished.on(() => {
+        if (alphaTab.renderer.boundsLookup) {
+          setBoundsLookup(alphaTab.renderer.boundsLookup)
+        }
+      });
 
-  return (
-    <div ref={divRef}>
-      <AlphatabOverlay />
-    </div>
-  )
-}
+      updateAlphaTab(dotsToAlphaTex(dots))
+    }
+  }, [alphaTab])
+
+  useEffect(() => {
+    if (alphaTab) {
+      updateAlphaTab(dotsToAlphaTex(dots))
+    }
+  }, [JSON.stringify(dots)])
+
+    return (
+      <div>
+        <div className="relative"
+          ref={alphaTabRef}
+        >
+          <AlphatabOverlay
+            boundsLookup={boundsLookup}
+            showStaveGroups={false}
+            showMasterBars={false}
+            showBars={false}
+            showBeats
+            showNotes={false}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  export default Alphatab

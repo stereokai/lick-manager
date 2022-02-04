@@ -18,9 +18,9 @@ export const ComponentGroups = {
 };
 
 const alphaTabComponentGroups = []
-for (let key in ComponentGroups) {
+for (const key in ComponentGroups) {
   alphaTabComponentGroups.push({
-    name: key,
+    type: key,
     key: ComponentGroups[key]
   })
 }
@@ -39,17 +39,16 @@ export function collectAlphaTabComponents(container, level, components = []) {
         }
 
         components.push({
-          index: member.index,
           bounds: member.visualBounds || member.noteHeadBounds,
-          type: alphaTabComponentGroups[level].name,
-          member
+          type: alphaTabComponentGroups[level].type,
+          component: member
         })
-        console.log(components[components.length - 1])
+
         collectAlphaTabComponents(member, level + 1, components)
         index++
       }
     }
   }
-  window.cmps = components
+
   return components;
 }

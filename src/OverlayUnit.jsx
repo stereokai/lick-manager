@@ -35,7 +35,7 @@ const OverlayUnit = ({bounds, type }) => {
       // ref={overlayUnitRef}
       style={style}
       className="absolute border-solid border-1 border-orange-500 bg-orange-300"
-    ></div>
+     />
   );
 };
 

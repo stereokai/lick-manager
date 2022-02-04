@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { BEATS_TYPE, collectAlphaTabComponents } from './helpers';
-import OverlayUnit from './OverlayUnit';
+import React, { useLayoutEffect, useState } from "react";
+import { BEATS_TYPE, collectAlphaTabComponents } from "./helpers";
+import OverlayUnit from "./OverlayUnit";
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
@@ -15,31 +15,29 @@ const getCircularReplacer = () => {
   };
 };
 
-const AlphatabOverlay = ({boundsLookup, ...filters }) => {
+const AlphatabOverlay = ({ boundsLookup, ...filters }) => {
   const [guides, setGuides] = useState([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (boundsLookup) {
-      setGuides([...collectAlphaTabComponents(boundsLookup, 0)]) }
-  }, [boundsLookup])
-
-  useEffect(() => {
-    // console.log('guides', guides.map(guide => guide.member))
-  }, [JSON.stringify(guides, getCircularReplacer())])
+      setGuides([...collectAlphaTabComponents(boundsLookup, 0)]);
+    }
+  }, [boundsLookup]);
 
   return (
     <div className="absolute z-50 inset-0 opacity-30">
       {guides
-        .filter(guide => !!filters[`show${guide.type}`])
-        .filter(guide => {
-          console.log('test', guide.type, BEATS_TYPE, !!guide.member.beat.notes, !!guide.member.beat.notes.length)
-          return guide.type != BEATS_TYPE || !!guide.member.beat.notes.length
+        .filter((guide) => !!filters[`show${guide.type}`])
+        .filter((guide) => {
+          return (
+            guide.type !== BEATS_TYPE || !!guide.component.beat.notes.length
+          ); // don't show guide for empty beats
         })
         .map((guide, index) => (
           <OverlayUnit key={index} bounds={guide.bounds} />
         ))}
     </div>
   );
-}
+};
 
-export default AlphatabOverlay
+export default React.memo(AlphatabOverlay);
