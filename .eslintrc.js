@@ -9,6 +9,7 @@ module.exports = {
   // ],
   extends: [
     "standard",
+    "plugin:import/recommended",
     "plugin:react/recommended",
     "standard-jsx",
     "standard-react",

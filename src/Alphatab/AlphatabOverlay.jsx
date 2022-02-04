@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
-import { BEATS_TYPE, collectAlphaTabComponents } from "./helpers";
-import OverlayUnit from "./OverlayUnit";
+import { BEATS_TYPE, collectAlphaTabComponents } from "./AlphatabHelpers";
+import OverlayUnit from "./OverlayUnit.jsx";
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
@@ -15,7 +15,7 @@ const getCircularReplacer = () => {
   };
 };
 
-const AlphatabOverlay = ({ boundsLookup, ...filters }) => {
+const AlphatabOverlay = ({ boundsLookup, isVisible, ...filters }) => {
   const [guides, setGuides] = useState([]);
 
   useLayoutEffect(() => {
@@ -34,7 +34,11 @@ const AlphatabOverlay = ({ boundsLookup, ...filters }) => {
           ); // don't show guide for empty beats
         })
         .map((guide, index) => (
-          <OverlayUnit key={index} bounds={guide.bounds} />
+          <OverlayUnit
+            key={index}
+            bounds={guide.bounds}
+            isVisible={isVisible}
+          />
         ))}
     </div>
   );
