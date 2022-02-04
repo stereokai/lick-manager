@@ -1,28 +1,29 @@
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import eslintPlugin from "@nabla/vite-plugin-eslint";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
-function renderChunks(deps) {
-  let chunks = {};
-  Object.keys(deps).forEach((key) => {
-    if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
-    chunks[key] = [key];
-  });
-  return chunks;
-}
+const resolveAliases = [
+  { find: /react-dom$/, replacement: "react-dom/profiling" },
+  { find: "scheduler/tracing", replacement: "scheduler/tracing-profiling" },
+];
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), eslintPlugin()],
+  resolve: {
+    alias: resolveAliases,
+  },
   optimizeDeps: {
-    exclude: ["@coderline/alphatab"]
+    exclude: ["@coderline/alphatab"],
   },
   build: {
     sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
-          '@coderline/alphatab': ['@coderline/alphatab']
+          "@coderline/alphatab": ["@coderline/alphatab"],
         },
       },
     },
   },
-  })
+});
