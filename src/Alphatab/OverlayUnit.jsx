@@ -1,15 +1,4 @@
 const OverlayUnit = ({ bounds, isVisible }) => {
-  // const [style, setStyle] = useState();
-  // useEffect(() => {
-  //   setStyle(() => {
-  //     if (!bounds) return;
-
-  //     return {
-
-  //     };
-  //   });
-  // }, [bounds]);
-
   const style = {
     top: `${bounds.y}px`,
     left: `calc(${bounds.x}px - 0.125rem`,
