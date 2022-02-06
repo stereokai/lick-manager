@@ -54,12 +54,14 @@ export const beatsReducer = (state, action) => {
     case "ADD_NOTE":
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
+      if (!beat) return state;
       // have to create a new set to trigger React
       beat = addNoteToBeat(beat, action.note);
       return { ...state, beats: [...beats] };
     case "REMOVE_NOTE":
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
+      if (!beat) return state;
       // have to create a new set to trigger React
       beat = removeNoteFromBeat(beat, action.note);
       return { ...state, beats: [...beats] };
@@ -71,8 +73,8 @@ export const beatsReducer = (state, action) => {
 
 export const BeatsProvider = (props) => {
   const [state, dispatch] = useReducer(beatsReducer, {
-    beats: [],
-    currentBeat: -1,
+    beats: [getNewBeat()],
+    currentBeat: 0,
   });
   const value = useMemo(() => [state, dispatch], [state]);
   return <BeatsContext.Provider value={value} {...props} />;

@@ -16,9 +16,6 @@ const App = () => {
 
     useHotkeys("left", () => dispatch({ type: "DECREMENT" }));
     useHotkeys("right", () => dispatch({ type: "INCREMENT" }));
-    window.addBeat = () => {
-      dispatch({ type: "ADD_BEAT" });
-    };
 
     return (
       <div className="flex-shrink p-2">
