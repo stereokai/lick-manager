@@ -1,116 +1,7 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
+import { Beat } from "./models/Beat.js";
 
 const BeatsContext = createContext();
-
-class Notes {
-  constructor() {
-    this.map = new Map();
-    this[Symbol.iterator] = this.values;
-  }
-
-  add(note) {
-    if (!this.map.has(note)) {
-      this.map.set(note.tex, note);
-    }
-    return this.map;
-  }
-
-  values() {
-    return this.map.values();
-  }
-
-  delete(note) {
-    const noteTex = Note.getTex(note);
-    this.map.delete(noteTex);
-    return this.map;
-  }
-
-  has(note) {
-    const noteTex = Note.getTex(note);
-    return this.map.has(noteTex);
-  }
-
-  size() {
-    return this.map.size;
-  }
-
-  get immutable() {
-    const arr = Array.from(this.map.values());
-    const arr2 = arr.map((note) => note.immutable);
-    // return Array.from(this.map.values()).map((note) => note.immutable);
-    return arr2;
-  }
-}
-
-const getNewNote = () => {
-  return {
-    string: 0,
-    fret: 0,
-    beats: [],
-  };
-};
-
-class Note {
-  constructor(fret, string, beat) {
-    this.fret = fret;
-    this.string = string;
-    if (typeof beat !== "undefined") {
-      this.beat = beat;
-    }
-  }
-
-  get immutable() {
-    const o = Object.assign({}, this);
-    o.tex = this.tex;
-    o.beats = new Set();
-    return o;
-  }
-
-  get tex() {
-    return Note.getTex(this);
-  }
-}
-Note.getTex = (note) => {
-  return `${note.fret}.${note.string}`;
-};
-Note.fromPosition = (position) => {
-  return new Note(position.fret, position.string);
-};
-Note.fromTex = (noteTex) => {
-  noteTex = noteTex.split(".");
-  return new Note(noteTex[0], noteTex[1]);
-};
-
-class Beat {
-  constructor(index) {
-    this.index = index;
-    this.notes = new Notes();
-    this.strings = Array(6).fill(0);
-  }
-
-  addNote(note) {
-    if (this.strings[note.string - 1]) {
-      return false;
-    }
-
-    const { fret, string } = note;
-    this.strings[note.string - 1]++;
-    this.notes.add(new Note(fret, string, this.index));
-    return true;
-  }
-
-  removeNote(note) {
-    if (!this.notes.has(getTex(note))) {
-      return false;
-    }
-
-    this.strings[note.string - 1]--;
-    this.notes.delete(note);
-    return true;
-  }
-}
-
-export const getTex = Note.getTex;
 
 const getNewBeat = (index) => {
   return new Beat(index);
@@ -118,7 +9,7 @@ const getNewBeat = (index) => {
 
 export const beatsReducer = (state, action) => {
   const { currentBeat } = state;
-  let { beats, notes } = state;
+  let { beats } = state;
   let beat;
 
   switch (action.type) {
@@ -142,7 +33,6 @@ export const beatsReducer = (state, action) => {
       if (!beat) return state;
       // have to create a new set to trigger React
       if (beat.addNote(action.note)) {
-        // notes.set()
         return { ...state, beats: [...beats] };
       }
       return state;

@@ -3,26 +3,26 @@ export const OverlayType = {
   RealBounds: 1,
 };
 
-export const STAVE_GROUPS_TYPE = 'StaveGroups';
-export const MASTER_BARS_TYPE = 'MasterBars';
-export const BARS_TYPE = 'Bars';
-export const BEATS_TYPE = 'Beats';
-export const NOTES_TYPE = 'Notes';
+export const STAVE_GROUPS_TYPE = "StaveGroups";
+export const MASTER_BARS_TYPE = "MasterBars";
+export const BARS_TYPE = "Bars";
+export const BEATS_TYPE = "Beats";
+export const NOTES_TYPE = "Notes";
 
 export const ComponentGroups = {
-  [STAVE_GROUPS_TYPE]: 'staveGroups' ,
-  [MASTER_BARS_TYPE]: 'bars' ,
-  [BARS_TYPE]: 'bars' ,
-  [BEATS_TYPE]: 'beats' ,
-  [NOTES_TYPE]: 'notes' ,
+  [STAVE_GROUPS_TYPE]: "staveGroups",
+  [MASTER_BARS_TYPE]: "bars",
+  [BARS_TYPE]: "bars",
+  [BEATS_TYPE]: "beats",
+  [NOTES_TYPE]: "notes",
 };
 
-const alphaTabComponentGroups = []
+const alphaTabComponentGroups = [];
 for (const key in ComponentGroups) {
   alphaTabComponentGroups.push({
     type: key,
-    key: ComponentGroups[key]
-  })
+    key: ComponentGroups[key],
+  });
 }
 
 export function collectAlphaTabComponents(container, level, components = []) {
@@ -41,14 +41,32 @@ export function collectAlphaTabComponents(container, level, components = []) {
         components.push({
           bounds: member.visualBounds || member.noteHeadBounds,
           type: alphaTabComponentGroups[level].type,
-          component: member
-        })
+          component: member,
+        });
 
-        collectAlphaTabComponents(member, level + 1, components)
-        index++
+        collectAlphaTabComponents(member, level + 1, components);
+        index++;
       }
     }
   }
 
   return components;
 }
+
+export const beatsToAlphatex = (beats) => {
+  // TODO this is to avoid Alphatab throwing stupid errors
+  if (!beats.length)
+    return `
+\\tempo 90
+.`;
+
+  const notes = beats
+    .map(
+      (beat) => `(${beat.notes.immutable.map((note) => note.tex).join(" ")})`
+    )
+    .join(" ");
+
+  return `
+.
+:4 ${notes}`;
+};

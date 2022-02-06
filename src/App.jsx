@@ -2,8 +2,8 @@ import { useReducer } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import Alphatab from "./Alphatab/Alphatab.jsx";
 import { BeatsProvider, useBeats } from "./Beats.jsx";
-import { dotsReducer } from "./dotsReducer.jsx";
-import { Fretboard } from "./Fretboard.jsx";
+import { dotsReducer } from "./Fretboard/dotsReducer.jsx";
+import { Fretboard } from "./Fretboard/Fretboard.jsx";
 
 const App = () => {
   const [dots, setDots] = useReducer(dotsReducer, []);

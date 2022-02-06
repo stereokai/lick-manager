@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { collectAlphaTabComponents } from "./AlphatabHelpers";
+import { collectAlphaTabComponents } from "./alphatabHelpers";
 import OverlayUnit from "./OverlayUnit.jsx";
 
 const getCircularReplacer = () => {

@@ -1,42 +1,8 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from "react";
 import { useBeats } from "../Beats.jsx";
+import { beatsToAlphatex } from "./alphatabHelpers.js";
 import AlphatabOverlay from "./AlphatabOverlay.jsx";
-
-function dotsToAlphaTex(dots) {
-  if (!dots.length)
-    return `
-\\tempo 90
-.`;
-
-  return dots
-    .filter((dot) => !dot.moving)
-    .reduce((str, dot) => {
-      return (str += ` ${dot.fret}.${dot.string}`);
-    }, ":4");
-}
-
-function beatsToAlphatex(beats) {
-  if (!beats.length)
-    return `
-\\tempo 90
-.`;
-
-  const notes = beats
-    .map((beat) => {
-      const size = beat.notes.size();
-      if (size === 0) {
-        return "";
-      } else {
-        return `(${beat.notes.immutable.map((note) => note.tex).join(" ")})`;
-      }
-    })
-    .join(" ");
-
-  return `
-.
-:4 ${notes}`;
-}
 
 const Alphatab = ({ children, dots }) => {
   const alphaTabRef = useRef(null);
@@ -82,10 +48,6 @@ const Alphatab = ({ children, dots }) => {
     if (alphaTab) {
       updateAlphaTab(beatsToAlphatex(beats));
     }
-  }, [beats]);
-
-  useEffect(() => {
-    console.log("beats", beats);
   }, [beats]);
 
   const filterBeat = (guide) => {
