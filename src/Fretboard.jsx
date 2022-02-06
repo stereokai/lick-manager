@@ -63,11 +63,14 @@ const FretboardJSX = ({ dots, setDots }) => {
     state: { beats, currentBeat },
   } = useBeats();
 
-  const fretboard = useFretboard(figureRef, {});
+  const fretboard = useFretboard(figureRef, {
+    dotStrokeColor: ({ moving }) => (moving ? "red" : "black"),
+  });
   useEffect(() => {
     try {
       fretboard.on("mousemove", (position) => {
         setDots({ dot: position, type: DOTS_ACTIONS.HOVER });
+        // console.log("move", position.fret, position.string);
       });
       fretboard.on("mouseleave", () => {
         setDots({ type: DOTS_ACTIONS.CLEAR_HOVER });

@@ -75,21 +75,17 @@ const Alphatab = ({ children, dots }) => {
           setBoundsLookup(alphaTab.renderer.boundsLookup);
         }
       });
-
-      // updateAlphaTab(beatsToAlphatex(beats));
     }
   }, [alphaTab]);
 
   useEffect(() => {
     if (alphaTab) {
       updateAlphaTab(beatsToAlphatex(beats));
-      // console.log(beatsToAlphatex(beats));
-      // console.log("hiyo");
     }
   }, [beats]);
 
   useEffect(() => {
-    // console.log("beats", beats);
+    console.log("beats", beats);
   }, [beats]);
 
   const filterBeat = (guide) => {

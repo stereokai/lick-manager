@@ -9,13 +9,8 @@ class Notes {
   }
 
   add(note) {
-    try {
-      if (!this.map.has(note)) {
-        this.map.set(note.tex, note);
-      }
-      console.log("map", this.map);
-    } catch (e) {
-      debugger;
+    if (!this.map.has(note)) {
+      this.map.set(note.tex, note);
     }
     return this.map;
   }
@@ -36,7 +31,6 @@ class Notes {
   }
 
   size() {
-    console.log("size", this.map.size);
     return this.map.size;
   }
 
@@ -102,7 +96,6 @@ class Beat {
     const { fret, string } = note;
     this.strings[note.string - 1]++;
     this.notes.add(new Note(fret, string, this.index));
-    console.log("add", this);
     return true;
   }
 
