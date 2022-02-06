@@ -26,7 +26,8 @@ const removeNoteFromBeat = (beat, note) => {
   }
 
   beat.strings[note.string - 1]--;
-  beat.notes = new Set(beat.notes).delete(getNoteTex(note));
+  beat.notes = new Set(beat.notes);
+  beat.notes.delete(getNoteTex(note));
   return beat;
 };
 
