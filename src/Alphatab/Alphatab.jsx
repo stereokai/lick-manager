@@ -1,5 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from "react";
+import { useBeats } from "../Beats.jsx";
 import AlphatabOverlay from "./AlphatabOverlay.jsx";
 
 function dotsToAlphaTex(dots) {
@@ -15,8 +16,31 @@ function dotsToAlphaTex(dots) {
     }, ":4");
 }
 
+function beatsToAlphatex(beats) {
+  if (!beats.length)
+    return `
+\\tempo 90
+.`;
+
+  const res = beats.reduce((str, beat) => {
+    return (
+      str +
+      ` (${[...beat.notes].reduce((str, noteStr) => {
+        const note = noteStr.split(":");
+        return (str += ` ${note[0]}.${note[1]}`);
+      }, "")})`
+    );
+  }, ":4");
+
+  console.log("tex:", res);
+  return res;
+}
+
 const Alphatab = ({ children, dots }) => {
   const alphaTabRef = useRef(null);
+  const {
+    state: { currentBeat, beats },
+  } = useBeats();
   const [alphaTab, setAlphaTab] = useState(() => {});
   const [boundsLookup, setBoundsLookup] = useState(() => {});
 
@@ -50,15 +74,19 @@ const Alphatab = ({ children, dots }) => {
         }
       });
 
-      updateAlphaTab(dotsToAlphaTex(dots));
+      updateAlphaTab(beatsToAlphatex(beats));
     }
   }, [alphaTab]);
 
   useEffect(() => {
     if (alphaTab) {
-      updateAlphaTab(dotsToAlphaTex(dots));
+      updateAlphaTab(beatsToAlphatex(beats));
     }
-  }, [JSON.stringify(dots)]);
+  }, [beats]);
+
+  useEffect(() => {
+    console.log(beats);
+  }, [beats]);
 
   return (
     <div>

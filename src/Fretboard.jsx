@@ -1,5 +1,6 @@
 import { Fretboard } from "@moonwave99/fretboard.js";
 import { useEffect, useRef, useState } from "react";
+import { useBeats } from "./Beats.jsx";
 import { DOTS_ACTIONS } from "./dotsReducer.jsx";
 
 const useFretboard = (figureRef, opts) => {
@@ -26,10 +27,9 @@ const CLICK_TIMEOUT = 150;
 let lastClick = false;
 const FretboardJSX = ({ dots, setDots }) => {
   const figureRef = useRef(null);
-
+  const { dispatch } = useBeats();
   const fretboard = useFretboard(figureRef, options);
   useEffect(() => {
-    console.log("ouch");
     try {
       fretboard.on("mousemove", (position) => {
         setDots({ dot: position, type: DOTS_ACTIONS.HOVER });
@@ -45,12 +45,14 @@ const FretboardJSX = ({ dots, setDots }) => {
           const { string, fret } = position;
           clearTimeout(lastClick);
           setDots({ string, fret, type: DOTS_ACTIONS.REMOVE });
+          dispatch({ type: "REMOVE_NOTE", note: position });
           lastClick = false;
           return;
         }
 
         lastClick = setTimeout(() => {
           setDots({ dot: position, type: DOTS_ACTIONS.ADD });
+          dispatch({ type: "ADD_NOTE", note: position });
           lastClick = false;
         }, CLICK_TIMEOUT);
       });

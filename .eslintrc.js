@@ -29,6 +29,7 @@ module.exports = {
         "react/prop-types": "off",
         "no-return-assign": "off",
         "no-unused-vars": "warn",
+        "no-var": "off",
       },
     },
   ],
