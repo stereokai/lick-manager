@@ -7,14 +7,11 @@ import AlphatabOverlay from "./AlphatabOverlay.jsx";
 const Alphatab = ({ children, dots }) => {
   const alphaTabRef = useRef(null);
   const {
+    dispatch,
     state: { currentBeat, beats },
   } = useBeats();
   const [alphaTab, setAlphaTab] = useState(() => {});
   const [boundsLookup, setBoundsLookup] = useState(() => {});
-
-  const updateAlphaTab = (tex) => {
-    alphaTab.tex(tex);
-  };
 
   useEffect(() => {
     const el = alphaTabRef.current;
@@ -46,15 +43,12 @@ const Alphatab = ({ children, dots }) => {
 
   useEffect(() => {
     if (alphaTab) {
-      updateAlphaTab(beatsToAlphatex(beats));
+      alphaTab.tex(beatsToAlphatex(beats));
     }
   }, [beats]);
 
-  const filterBeat = (guide) => {
-    // !!guide.component.beat.notes.length
-    if (guide && guide.component.beat.index === currentBeat) {
-      return true;
-    }
+  const clickHandler = ({ component: { beat } }) => {
+    dispatch({ type: "SET", index: beat.index });
   };
 
   return (
@@ -62,12 +56,15 @@ const Alphatab = ({ children, dots }) => {
       <div className="relative" ref={alphaTabRef}>
         <AlphatabOverlay
           boundsLookup={boundsLookup}
-          isVisible
-          showStaveGroups={false}
-          showMasterBars={false}
-          showBars={false}
-          showBeats={(...args) => filterBeat(...args)}
-          showNotes={false}
+          click={(guide) => clickHandler(guide)}
+          trackStaveGroups={false}
+          trackMasterBars={false}
+          trackBars={false}
+          trackBeats
+          trackNotes={false}
+          highlightBeats={({ component: { beat } }) =>
+            beat.index === currentBeat
+          }
         />
       </div>
     </div>
