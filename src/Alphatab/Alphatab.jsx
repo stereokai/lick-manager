@@ -88,6 +88,13 @@ const Alphatab = ({ children, dots }) => {
     console.log(beats);
   }, [beats]);
 
+  const filterBeat = (guide) => {
+    // !!guide.component.beat.notes.length
+    if (guide && guide.component.beat.index === currentBeat) {
+      return true;
+    }
+  };
+
   return (
     <div>
       <div className="relative" ref={alphaTabRef}>
@@ -97,7 +104,7 @@ const Alphatab = ({ children, dots }) => {
           showStaveGroups={false}
           showMasterBars={false}
           showBars={false}
-          showBeats
+          showBeats={(...args) => filterBeat(...args)}
           showNotes={false}
         />
       </div>

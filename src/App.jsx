@@ -40,11 +40,7 @@ const App = () => {
       <BeatsProvider>
         <Display />
         <div className="flex-grow bg-white m-5">
-          <Alphatab
-            dots={dots.filter((dot) => !dot.moving)}
-            tex="true"
-            tracks="all"
-          />
+          <Alphatab tex="true" tracks="all" />
         </div>
         <div className="flex-shrink bg-white m-5">
           <Fretboard dots={dots} setDots={setDots} />

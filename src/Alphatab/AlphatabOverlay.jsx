@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { BEATS_TYPE, collectAlphaTabComponents } from "./AlphatabHelpers";
+import { collectAlphaTabComponents } from "./AlphatabHelpers";
 import OverlayUnit from "./OverlayUnit.jsx";
 
 const getCircularReplacer = () => {
@@ -18,6 +18,16 @@ const getCircularReplacer = () => {
 const AlphatabOverlay = ({ boundsLookup, isVisible, ...filters }) => {
   const [guides, setGuides] = useState([]);
 
+  const filterGuide = (guide) => {
+    const filter = filters[`show${guide.type}`];
+
+    if (typeof filter === "function") {
+      return filter(guide);
+    }
+
+    return !!filter;
+  };
+
   useLayoutEffect(() => {
     if (boundsLookup) {
       setGuides([...collectAlphaTabComponents(boundsLookup, 0)]);
@@ -26,20 +36,9 @@ const AlphatabOverlay = ({ boundsLookup, isVisible, ...filters }) => {
 
   return (
     <div className="absolute z-50 inset-0 opacity-30">
-      {guides
-        .filter((guide) => !!filters[`show${guide.type}`])
-        .filter((guide) => {
-          return (
-            guide.type !== BEATS_TYPE || !!guide.component.beat.notes.length
-          ); // don't show guide for empty beats
-        })
-        .map((guide, index) => (
-          <OverlayUnit
-            key={index}
-            bounds={guide.bounds}
-            isVisible={isVisible}
-          />
-        ))}
+      {guides.filter(filterGuide).map((guide, index) => (
+        <OverlayUnit key={index} bounds={guide.bounds} isVisible={isVisible} />
+      ))}
     </div>
   );
 };
