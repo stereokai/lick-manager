@@ -19,7 +19,7 @@ const useFretboard = (figureRef, opts) => {
       fretboard.clear();
       el && Array.from(el.children).forEach((child) => child.remove());
     };
-  }, [figureRef, opts]);
+  }, [figureRef]);
   return fretboard;
 };
 
@@ -36,24 +36,34 @@ function concatSets(...iterables) {
 
 function dedupeNotes(beats) {
   if (!beats.length) return [];
+  function set(k, v) {
+    allNotes.set(k, v);
+    return allNotes.get(k);
+  }
+  const allNotes = new Map();
+  for (let i = 0; i < beats.length; i++) {
+    const notes = beats[i].notes;
 
-  const set = concatSets(...beats.map((beat) => beat.notes));
-  return [...set].map((noteStr) => {
-    const note = noteStr.split(":");
-    return { fret: note[0], string: note[1] };
-  });
+    for (const note of notes) {
+      const savedNote = allNotes.get(note.tex) || set(note.tex, note.immutable);
+      savedNote.beats.add(i);
+    }
+  }
+
+  // console.log("res", allNotes);
+  return Array.from(allNotes.values());
 }
 
-const options = { tom: 10 };
 const CLICK_TIMEOUT = 150;
 let lastClick = false;
 const FretboardJSX = ({ dots, setDots }) => {
   const figureRef = useRef(null);
   const {
     dispatch,
-    state: { beats },
+    state: { beats, currentBeat },
   } = useBeats();
-  const fretboard = useFretboard(figureRef, options);
+
+  const fretboard = useFretboard(figureRef, {});
   useEffect(() => {
     try {
       fretboard.on("mousemove", (position) => {
@@ -85,8 +95,18 @@ const FretboardJSX = ({ dots, setDots }) => {
   }, [fretboard]);
 
   useEffect(() => {
-    fretboard.setDots([...dots, ...dedupeNotes(beats)]).render();
-  }, [dots]);
+    fretboard
+      .setDots([...dots, ...dedupeNotes(beats)])
+      .render()
+      .style({
+        filter: (dot) => {
+          if (dot.beats) {
+            return dot.beats.has(currentBeat);
+          }
+        },
+        fill: "blue",
+      });
+  }, [dots, beats, currentBeat]);
 
   // useEffect(() => {
   //   const el = figureRef.current;

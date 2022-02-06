@@ -22,18 +22,20 @@ function beatsToAlphatex(beats) {
 \\tempo 90
 .`;
 
-  const res = beats.reduce((str, beat) => {
-    return (
-      str +
-      ` (${[...beat.notes].reduce((str, noteStr) => {
-        const note = noteStr.split(":");
-        return (str += ` ${note[0]}.${note[1]}`);
-      }, "")})`
-    );
-  }, ":4");
+  const notes = beats
+    .map((beat) => {
+      const size = beat.notes.size();
+      if (size === 0) {
+        return "";
+      } else {
+        return `(${beat.notes.immutable.map((note) => note.tex).join(" ")})`;
+      }
+    })
+    .join(" ");
 
-  console.log("tex:", res);
-  return res;
+  return `
+.
+:4 ${notes}`;
 }
 
 const Alphatab = ({ children, dots }) => {
@@ -74,18 +76,20 @@ const Alphatab = ({ children, dots }) => {
         }
       });
 
-      updateAlphaTab(beatsToAlphatex(beats));
+      // updateAlphaTab(beatsToAlphatex(beats));
     }
   }, [alphaTab]);
 
   useEffect(() => {
     if (alphaTab) {
       updateAlphaTab(beatsToAlphatex(beats));
+      // console.log(beatsToAlphatex(beats));
+      // console.log("hiyo");
     }
   }, [beats]);
 
   useEffect(() => {
-    console.log(beats);
+    // console.log("beats", beats);
   }, [beats]);
 
   const filterBeat = (guide) => {
