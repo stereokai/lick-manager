@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
-
 const OverlayUnit = ({ bounds, isVisible }) => {
-  const [style, setStyle] = useState();
-  useEffect(() => {
-    setStyle(() => {
-      if (!bounds) return;
-      return {
-        left: bounds.x + "px",
-        top: bounds.y + "px",
-        width: bounds.w + "px",
-        height: bounds.h + "px",
-      };
-    });
-  }, [bounds]);
+  // const [style, setStyle] = useState();
+  // useEffect(() => {
+  //   setStyle(() => {
+  //     if (!bounds) return;
+
+  //     return {
+
+  //     };
+  //   });
+  // }, [bounds]);
+
+  const style = {
+    top: `${bounds.y}px`,
+    left: `calc(${bounds.x}px - 0.125rem`,
+    width: `calc(${bounds.w}px + 0.25rem`,
+    height: `${bounds.h}px`,
+  };
 
   return (
     <div
