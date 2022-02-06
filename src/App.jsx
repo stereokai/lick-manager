@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import Alphatab from "./Alphatab/Alphatab.jsx";
-import { BeatsProvider, useBeats } from "./Beats.jsx";
+import { BeatsActions, BeatsProvider, useBeats } from "./Beats.jsx";
 import { dotsReducer } from "./Fretboard/dotsReducer.jsx";
 import { Fretboard } from "./Fretboard/Fretboard.jsx";
 
@@ -14,15 +14,19 @@ const App = () => {
       dispatch,
     } = useBeats();
 
-    useHotkeys("left", () => dispatch({ type: "DECREMENT" }));
-    useHotkeys("right", () => dispatch({ type: "INCREMENT" }));
+    useHotkeys("left", () =>
+      dispatch({ type: BeatsActions.DECREMENT_CURRENT_BEAT })
+    );
+    useHotkeys("right", () =>
+      dispatch({ type: BeatsActions.INCREMENT_CURRENT_BEAT })
+    );
 
     return (
       <div className="flex-shrink p-2">
         Current beat: {currentBeat + 1}, beats: {beats.length}
         <button
           className="m-1 px-3 py-1 rounded bg-purple-700 text-white"
-          onClick={() => dispatch({ type: "ADD_BEAT" })}
+          onClick={() => dispatch({ type: BeatsActions.ADD_BEAT })}
         >
           Add Beat
         </button>

@@ -1,4 +1,4 @@
-export const DOTS_ACTIONS = {
+export const DotsActions = {
   ADD: "ADD_DOT",
   REMOVE: "REMOVE_DOT",
   HOVER: "HOVER",
@@ -7,20 +7,20 @@ export const DOTS_ACTIONS = {
 
 export const dotsReducer = (dots, action) => {
   switch (action.type) {
-    case DOTS_ACTIONS.ADD:
+    case DotsActions.ADD:
       return [...dots, action.dot];
-    case DOTS_ACTIONS.REMOVE:
+    case DotsActions.REMOVE:
       return [
         ...dots.filter(
           (dot) => dot.string !== action.string || dot.fret !== action.fret
         ),
       ];
-    case DOTS_ACTIONS.HOVER:
+    case DotsActions.HOVER:
       return [
         ...dots.filter((dot) => !dot.moving),
         { ...action.dot, moving: true },
       ];
-    case DOTS_ACTIONS.CLEAR_HOVER:
+    case DotsActions.CLEAR_HOVER:
       return [...dots.filter((dot) => !dot.moving)];
     default:
       return dots;

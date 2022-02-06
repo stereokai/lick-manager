@@ -1,7 +1,7 @@
 import { Fretboard } from "@moonwave99/fretboard.js";
 import { useEffect, useRef, useState } from "react";
-import { useBeats } from "../Beats.jsx";
-import { DOTS_ACTIONS } from "./dotsReducer.jsx";
+import { BeatsActions, useBeats } from "../Beats.jsx";
+import { DotsActions } from "./dotsReducer.jsx";
 import { dedupeNotes } from "./fretboardHelpers.jsx";
 
 const useFretboard = (figureRef, opts) => {
@@ -39,10 +39,10 @@ const FretboardJSX = ({ dots, setDots }) => {
   useEffect(() => {
     try {
       fretboard.on("mousemove", (position) => {
-        setDots({ dot: position, type: DOTS_ACTIONS.HOVER });
+        setDots({ dot: position, type: DotsActions.HOVER });
       });
       fretboard.on("mouseleave", () => {
-        setDots({ type: DOTS_ACTIONS.CLEAR_HOVER });
+        setDots({ type: DotsActions.CLEAR_HOVER });
       });
       // fretboard.on("dblclick", ({ string, fret }) => {
       //   setDots({ string, fret, type: 'removeDot' });
@@ -50,15 +50,21 @@ const FretboardJSX = ({ dots, setDots }) => {
       fretboard.on("click", (position) => {
         if (lastClick) {
           clearTimeout(lastClick);
-          // setDots({ string, fret, type: DOTS_ACTIONS.REMOVE });
-          dispatch({ type: "REMOVE_NOTE", note: position });
+          // setDots({ string, fret, type: DotsActions.REMOVE });
+          dispatch({
+            type: BeatsActions.REMOVE_NOTE_FROM_CURRENT_BEAT,
+            note: position,
+          });
           lastClick = false;
           return;
         }
 
         lastClick = setTimeout(() => {
-          // setDots({ dot: position, type: DOTS_ACTIONS.ADD });
-          dispatch({ type: "ADD_NOTE", note: position });
+          // setDots({ dot: position, type: DotsActions.ADD });
+          dispatch({
+            type: BeatsActions.ADD_NOTE_TO_CURRENT_BEAT,
+            note: position,
+          });
           lastClick = false;
         }, CLICK_TIMEOUT);
       });

@@ -7,15 +7,24 @@ const getNewBeat = (index) => {
   return new Beat(index);
 };
 
+export const BeatsActions = {
+  INCREMENT_CURRENT_BEAT: "INCREMENT_CURRENT_BEAT",
+  DECREMENT_CURRENT_BEAT: "DECREMENT_CURRENT_BEAT",
+  SET_CURRENT_BEAT: "SET_CURRENT_BEAT",
+  ADD_BEAT: "ADD_BEAT",
+  ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
+  REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
+};
+
 export const beatsReducer = (state, action) => {
   const { currentBeat } = state;
   let { beats } = state;
   let beat;
 
   switch (action.type) {
-    case "INCREMENT":
-    case "ADD_BEAT":
-      if (!beats.length || action.type === "ADD_BEAT") {
+    case BeatsActions.INCREMENT_CURRENT_BEAT:
+    case BeatsActions.ADD_BEAT:
+      if (!beats.length || action.type === BeatsActions.ADD_BEAT) {
         beats = [...beats, getNewBeat(beats.length)];
       }
       return {
@@ -23,11 +32,11 @@ export const beatsReducer = (state, action) => {
         beats,
         currentBeat: Math.min(currentBeat + 1, beats.length - 1),
       };
-    case "DECREMENT":
+    case BeatsActions.DECREMENT_CURRENT_BEAT:
       return { ...state, currentBeat: Math.max(currentBeat - 1, 0) };
-    case "SET":
-      return { ...state, currentBeat: action.index };
-    case "ADD_NOTE":
+    case BeatsActions.SET_CURRENT_BEAT:
+      return { ...state, currentBeat: action.beat };
+    case BeatsActions.ADD_NOTE_TO_CURRENT_BEAT:
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
@@ -36,7 +45,7 @@ export const beatsReducer = (state, action) => {
         return { ...state, beats: [...beats] };
       }
       return state;
-    case "REMOVE_NOTE":
+    case BeatsActions.REMOVE_NOTE_FROM_CURRENT_BEAT:
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       if (!beat) return state;

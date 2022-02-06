@@ -1,6 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from "react";
-import { useBeats } from "../Beats.jsx";
+import { BeatsActions, useBeats } from "../Beats.jsx";
 import { beatsToAlphatex } from "./alphatabHelpers.js";
 import AlphatabOverlay from "./AlphatabOverlay.jsx";
 
@@ -48,7 +48,7 @@ const Alphatab = ({ children, dots }) => {
   }, [beats]);
 
   const clickHandler = ({ component: { beat } }) => {
-    dispatch({ type: "SET", index: beat.index });
+    dispatch({ type: BeatsActions.SET_CURRENT_BEAT, beat: beat.index });
   };
 
   return (
