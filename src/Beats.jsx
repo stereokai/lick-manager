@@ -2,8 +2,32 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 
 const BeatsContext = createContext();
 
-const getNoteString = (note) => {
+const getNewBeat = () => {
+  return { notes: new Set(), strings: Array(6).fill(0) };
+};
+
+const getNoteTex = (note) => {
   return `${note.fret}:${note.string}`;
+};
+
+const addNoteToBeat = (beat, note) => {
+  if (beat.strings[note.string - 1]) {
+    return beat;
+  }
+
+  beat.strings[note.string - 1]++;
+  beat.notes = new Set(beat.notes).add(getNoteTex(note));
+  return beat;
+};
+
+const removeNoteFromBeat = (beat, note) => {
+  if (!beat.notes.has(getNoteTex(note))) {
+    return beat;
+  }
+
+  beat.strings[note.string - 1]--;
+  beat.notes = new Set(beat.notes).delete(getNoteTex(note));
+  return beat;
 };
 
 export const beatsReducer = (state, action) => {
@@ -15,7 +39,7 @@ export const beatsReducer = (state, action) => {
     case "INCREMENT":
     case "ADD_BEAT":
       if (!beats.length || action.type === "ADD_BEAT") {
-        beats = [...beats, { notes: new Set() }];
+        beats = [...beats, getNewBeat()];
       }
       return {
         ...state,
@@ -30,16 +54,13 @@ export const beatsReducer = (state, action) => {
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       // have to create a new set to trigger React
-      beat.notes = new Set(beat.notes).add(getNoteString(action.note));
+      beat = addNoteToBeat(beat, action.note);
       return { ...state, beats: [...beats] };
     case "REMOVE_NOTE":
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       // have to create a new set to trigger React
-      if (beat.notes.has(getNoteString(action.note))) {
-        beat.notes = new Set(beat.notes);
-        beat.notes.delete(getNoteString(action.note));
-      }
+      beat = removeNoteFromBeat(beat, action.note);
       return { ...state, beats: [...beats] };
     default: {
       throw new Error(`Unsupported action type: ${action.type}`);
