@@ -96,7 +96,7 @@ const FretboardJSX = ({ dots, setDots }) => {
 
   useEffect(() => {
     fretboard
-      .setDots([...dots, ...dedupeNotes(beats)])
+      .setDots([...dedupeNotes(beats), ...dots])
       .render()
       .style({
         filter: (dot) => {
