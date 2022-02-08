@@ -1,7 +1,8 @@
 import { useReducer } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import Alphatab from "./Alphatab/Alphatab.jsx";
-import { BeatsActions, BeatsProvider, useBeats } from "./Beats.jsx";
+import "./App.css";
+import { BeatsActions, BeatsProvider, Durations, useBeats } from "./Beats.jsx";
 import { dotsReducer } from "./Fretboard/dotsReducer.jsx";
 import { Fretboard } from "./Fretboard/Fretboard.jsx";
 
@@ -23,6 +24,18 @@ const App = () => {
 
     return (
       <div className="flex-shrink p-2">
+        <div className="flex-col text-center">
+          <div className="flex bravura m-3">
+            {Object.values(Durations).map((duration, i) => (
+              <button
+                key={i}
+                className="bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1"
+              >
+                <span>{duration.codepoint}</span>
+              </button>
+            ))}
+          </div>
+        </div>
         Current beat: {currentBeat + 1}, beats: {beats.length}
         <button
           className="m-1 px-3 py-1 rounded bg-purple-700 text-white"

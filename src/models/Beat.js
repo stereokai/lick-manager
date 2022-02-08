@@ -2,8 +2,9 @@ import { Note } from "./Note.js";
 import { Notes } from "./Notes.js";
 
 export class Beat {
-  constructor(index) {
+  constructor(index, duration) {
     this.index = index;
+    this.duration = duration;
     this.notes = new Notes();
     this.strings = Array(6).fill(0);
   }

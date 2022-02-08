@@ -3,6 +3,134 @@ import { Beat } from "./models/Beat.js";
 
 const BeatsContext = createContext();
 
+export const Durations = {
+  noteWhole: {
+    alternateCodepoint: "\u1d15D",
+    codepoint: "\ue1d2",
+    description: "Whole note (semibreve)",
+    tex: "1",
+  },
+  noteHalfUp: {
+    alternateCodepoint: "\u1d15E",
+    codepoint: "\ue1d3",
+    description: "Half note (minim) stem up",
+    tex: "2",
+  },
+  noteQuarterUp: {
+    alternateCodepoint: "\u1d15F",
+    codepoint: "\ue1d5",
+    description: "Quarter note (crotchet) stem up",
+    tex: "4",
+  },
+  note8thUp: {
+    alternateCodepoint: "\u1d160",
+    codepoint: "\ue1d7",
+    description: "Eighth note (quaver) stem up",
+    tex: "8",
+  },
+  note16thUp: {
+    alternateCodepoint: "\u1d161",
+    codepoint: "\ue1d9",
+    description: "16th note (semiquaver) stem up",
+    tex: "16",
+  },
+  note32ndUp: {
+    alternateCodepoint: "\u1d162",
+    codepoint: "\ue1db",
+    description: "32nd note (demisemiquaver) stem up",
+    tex: "32",
+  },
+  note64thUp: {
+    alternateCodepoint: "\u1d163",
+    codepoint: "\ue1dd",
+    description: "64th note (hemidemisemiquaver) stem up",
+    tex: "64",
+  },
+};
+
+export const Modifiers = {
+  restQuarter: {
+    alternateCodepoint: "\u1d13D",
+    codepoint: "\ue4e5",
+    description: "Quarter (crotchet) rest",
+    tex: "r",
+  },
+  articStaccatoAbove: {
+    alternateCodepoint: "\u1d17C",
+    codepoint: "\ue4a2",
+    description: "Staccato above",
+    tex: "",
+  },
+  articStaccatoBelow: {
+    codepoint: "\ue4a3",
+    description: "Staccato below",
+    tex: "",
+  },
+  tuplet3: { codepoint: "\ue883", description: "Tuplet 3", tex: "tu 3" },
+};
+
+export const Rests = {
+  restWhole: {
+    alternateCodepoint: "\u1d13B",
+    codepoint: "\ue4e3",
+    description: "Whole (semibreve) rest",
+    tex: "r",
+  },
+  restHalf: {
+    alternateCodepoint: "\u1d13C",
+    codepoint: "\ue4e4",
+    description: "Half (minim) rest",
+    tex: "r",
+  },
+  restQuarter: {
+    alternateCodepoint: "\u1d13D",
+    codepoint: "\ue4e5",
+    description: "Quarter (crotchet) rest",
+    tex: "r",
+  },
+  rest8th: {
+    alternateCodepoint: "\u1d13E",
+    codepoint: "\ue4e6",
+    description: "Eighth (quaver) rest",
+    tex: "r",
+  },
+  rest16th: {
+    alternateCodepoint: "\u1d13F",
+    codepoint: "\ue4e7",
+    description: "16th (semiquaver) rest",
+    tex: "r",
+  },
+  rest32nd: {
+    alternateCodepoint: "\u1d140",
+    codepoint: "\ue4e8",
+    description: "32nd (demisemiquaver) rest",
+    tex: "r",
+  },
+  rest64th: {
+    alternateCodepoint: "\u1d141",
+    codepoint: "\ue4e9",
+    description: "64th (hemidemisemiquaver) rest",
+    tex: "r",
+  },
+};
+
+class BeatConditions {
+  constructor() {
+    const durationsNames = [
+      "WHOLE",
+      "HALF",
+      "QUARTER",
+      "EIGHTH",
+      "SIXTEENTH",
+      "THIRTY_SECOND",
+    ];
+
+    const durationsGlyphs = ["w", "q", "h", "e", "s", "z"];
+
+    const durationTex = [];
+  }
+}
+
 const getNewBeat = (index) => {
   return new Beat(index);
 };
@@ -11,6 +139,8 @@ export const BeatsActions = {
   INCREMENT_CURRENT_BEAT: "INCREMENT_CURRENT_BEAT",
   DECREMENT_CURRENT_BEAT: "DECREMENT_CURRENT_BEAT",
   SET_CURRENT_BEAT: "SET_CURRENT_BEAT",
+  SET_CURRENT_DURATION: "SET_CURRENT_DURATION",
+  SET_BEAT_DURATION: "SET_BEAT_DURATION",
   ADD_BEAT: "ADD_BEAT",
   ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
@@ -54,6 +184,8 @@ export const beatsReducer = (state, action) => {
         return { ...state, beats: [...beats] };
       }
       return state;
+    case BeatsActions.SET_BEAT_DURATION:
+    case BeatsActions.SET_CURRENT_DURATION:
     default: {
       throw new Error(`Unsupported action type: ${action.type}`);
     }
@@ -63,7 +195,7 @@ export const beatsReducer = (state, action) => {
 export const BeatsProvider = (props) => {
   const [state, dispatch] = useReducer(beatsReducer, {
     beats: [getNewBeat(0)],
-    notes: new Map(),
+    currentDuration: 0,
     currentBeat: 0,
   });
   const value = useMemo(() => [state, dispatch], [state]);

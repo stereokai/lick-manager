@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Rhythms";
+  src: local("Rhythms"), url("assets/Rhyth.otf") format("opentype");
+}
+
+.rhythms {
+  font-family: "Rhythms";
+  font-size: 30px;
+}
+
+.bravura {
+  font-family: alphaTab;
+  font-size: 30px;
+}
+
+.rhythms > button,
+.bravura > button {
+  width: 3rem;
+}
+
+.bravura > button > span {
+  display: block;
+  transform: translateY(10px);
+}
 .App {
   text-align: center;
 }
