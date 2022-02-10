@@ -46,7 +46,7 @@ const Alphatab = ({ children, dots }) => {
     if (alphaTab) {
       alphaTab.tex(beatsToAlphatex(beats));
     }
-  }, [beats]);
+  }, [beats, alphaTab]);
 
   const clickHandler = ({ component: { beat } }) => {
     dispatch({ type: BeatsActions.SET_CURRENT_BEAT, beat: beat.index });

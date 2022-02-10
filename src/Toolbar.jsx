@@ -26,7 +26,7 @@ export const Toolbar = () => {
         Add Beat
       </button>
       <br />
-      Change beats with left and right keys
+      Change beats with left and right keys or click, add notes via fretboard
     </div>
   );
 };
