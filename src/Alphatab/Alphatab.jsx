@@ -18,6 +18,7 @@ const Alphatab = ({ children, dots }) => {
     const settings = new Settings();
 
     settings.display.staveProfile = 3;
+    settings.notation.rhythmMode = 2;
     if (alphaTab) {
       alphaTab.destroy();
     }
