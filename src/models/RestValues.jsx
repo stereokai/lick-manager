@@ -1,44 +1,44 @@
 export const RestValues = {
-  restWhole: {
+  whole: {
     alternateCodepoint: "\u1d13B",
     codepoint: "\ue4e3",
     description: "Whole (semibreve) rest",
     tex: "r",
   },
-  restHalf: {
+  half: {
     alternateCodepoint: "\u1d13C",
     codepoint: "\ue4e4",
     description: "Half (minim) rest",
     tex: "r",
   },
-  restQuarter: {
+  quarter: {
     alternateCodepoint: "\u1d13D",
     codepoint: "\ue4e5",
     description: "Quarter (crotchet) rest",
     tex: "r",
   },
-  rest8th: {
+  eighth: {
     alternateCodepoint: "\u1d13E",
     codepoint: "\ue4e6",
     description: "Eighth (quaver) rest",
     tex: "r",
   },
-  rest16th: {
+  sixteenth: {
     alternateCodepoint: "\u1d13F",
     codepoint: "\ue4e7",
-    description: "16th (semiquaver) rest",
+    description: "sixteenth (semiquaver) rest",
     tex: "r",
   },
-  rest32nd: {
+  thirtysecond: {
     alternateCodepoint: "\u1d140",
     codepoint: "\ue4e8",
-    description: "32nd (demisemiquaver) rest",
+    description: "thirtysecond (demisemiquaver) rest",
     tex: "r",
   },
-  rest64th: {
+  sixtyfourth: {
     alternateCodepoint: "\u1d141",
     codepoint: "\ue4e9",
-    description: "64th (hemidemisemiquaver) rest",
+    description: "sixtyfourth (hemidemisemiquaver) rest",
     tex: "r",
   },
 };

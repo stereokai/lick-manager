@@ -1,44 +1,44 @@
 export const NoteValues = {
-  noteWhole: {
+  whole: {
     alternateCodepoint: "\u1d15D",
     codepoint: "\ue1d2",
     description: "Whole note (semibreve)",
     tex: "1",
   },
-  noteHalfUp: {
+  half: {
     alternateCodepoint: "\u1d15E",
     codepoint: "\ue1d3",
     description: "Half note (minim) stem up",
     tex: "2",
   },
-  noteQuarterUp: {
+  quarter: {
     alternateCodepoint: "\u1d15F",
     codepoint: "\ue1d5",
     description: "Quarter note (crotchet) stem up",
     tex: "4",
   },
-  note8thUp: {
+  eighth: {
     alternateCodepoint: "\u1d160",
     codepoint: "\ue1d7",
     description: "Eighth note (quaver) stem up",
     tex: "8",
   },
-  note16thUp: {
+  sixteenth: {
     alternateCodepoint: "\u1d161",
     codepoint: "\ue1d9",
-    description: "16th note (semiquaver) stem up",
+    description: "sixteenth note (semiquaver) stem up",
     tex: "16",
   },
-  note32ndUp: {
+  thirtysecond: {
     alternateCodepoint: "\u1d162",
     codepoint: "\ue1db",
-    description: "32nd note (demisemiquaver) stem up",
+    description: "thirtysecond note (demisemiquaver) stem up",
     tex: "32",
   },
-  note64thUp: {
+  sixtyfourth: {
     alternateCodepoint: "\u1d163",
     codepoint: "\ue1dd",
-    description: "64th note (hemidemisemiquaver) stem up",
+    description: "sixtyfourth note (hemidemisemiquaver) stem up",
     tex: "64",
   },
 };
