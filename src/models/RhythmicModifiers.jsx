@@ -9,12 +9,7 @@ export const RhythmicModifiers = {
     alternateCodepoint: "\u1d17C",
     codepoint: "\ue4a2",
     description: "Staccato above",
-    tex: "",
-  },
-  articStaccatoBelow: {
-    codepoint: "\ue4a3",
-    description: "Staccato below",
-    tex: "",
+    tex: "d",
   },
   tuplet3: { codepoint: "\ue883", description: "Tuplet 3", tex: "tu 3" },
 };

@@ -60,12 +60,23 @@ export class Beat {
   }
 
   get tex() {
+    let rhythmicModifiers = [...this.modifiers]
+      .filter((m) => m !== RhythmicModifiers.rest)
+      .map((m) => m.tex)
+      .join(" ")
+      .trim();
+
+    if (rhythmicModifiers) rhythmicModifiers = `{${rhythmicModifiers}}`;
+
+    console.log("rM", rhythmicModifiers, this.getDuration().tex);
     if (this.hasModifier(RhythmicModifiers.rest)) {
-      return `${RhythmicModifiers.rest.tex}.${this.getDuration().tex}`;
+      return `${RhythmicModifiers.rest.tex}.${
+        this.getDuration().tex
+      }${rhythmicModifiers}`;
     }
 
     return `(${this.notes.immutable.map((note) => note.tex).join(" ")}).${
       this.getDuration().tex
-    }`;
+    }${rhythmicModifiers}`;
   }
 }
