@@ -6,6 +6,8 @@ export const dedupeNotes = (beats) => {
   }
   const allNotes = new Map();
   for (let i = 0; i < beats.length; i++) {
+    if (beats[i].isRest) continue;
+
     const notes = beats[i].notes;
 
     for (const note of notes) {
