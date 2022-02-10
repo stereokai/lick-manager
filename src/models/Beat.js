@@ -1,8 +1,9 @@
 import { Note } from "./Note.js";
+import { NoteDurations } from "./NoteDurations.js";
 import { Notes } from "./Notes.js";
 
 export class Beat {
-  constructor(index, noteValue = "quarter", modifiers = new Set()) {
+  constructor(index, noteValue = NoteDurations.QUARTER, modifiers = new Set()) {
     this.index = index;
     this.noteValue = noteValue;
     this.notes = new Notes();
@@ -37,6 +38,10 @@ export class Beat {
 
   removeModifier(modifier) {
     this.modifiers.delete(modifier);
+  }
+
+  hasModifier(modifier) {
+    return this.modifiers.has(modifier);
   }
 
   setValue(noteValue) {
