@@ -2,7 +2,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { BeatControls } from "./BeatControls.jsx";
 import { BeatsActions, useBeats } from "./Beats.jsx";
 
-export const Toolbar = () => {
+const Toolbar = () => {
   const {
     state: { currentBeat, beats },
     dispatch,
@@ -30,3 +30,4 @@ export const Toolbar = () => {
     </div>
   );
 };
+export default Toolbar;

@@ -1,7 +1,7 @@
 import { Fretboard } from "@moonwave99/fretboard.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { BeatsActions, useBeats } from "../Beats.jsx";
-import { DotsActions } from "./dotsReducer.jsx";
+import { DotsActions, dotsReducer } from "./dotsReducer.jsx";
 import { dedupeNotes } from "./fretboardHelpers.jsx";
 
 const useFretboard = (figureRef, opts) => {
@@ -26,7 +26,8 @@ const useFretboard = (figureRef, opts) => {
 
 const CLICK_TIMEOUT = 150;
 let lastClick = false;
-const FretboardJSX = ({ dots, setDots }) => {
+const FretboardJSX = () => {
+  const [dots, setDots] = useReducer(dotsReducer, []);
   const figureRef = useRef(null);
   const {
     dispatch,

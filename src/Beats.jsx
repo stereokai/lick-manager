@@ -3,13 +3,6 @@ import { Beat } from "./models/Beat.js";
 
 const BeatsContext = createContext();
 
-const getNewBeat = (beat) => {
-  if (beat instanceof Beat)
-    return new Beat(beat.index + 1, beat.noteValue, new Set(beat.modifiers));
-
-  return new Beat(0);
-};
-
 export const BeatsActions = {
   INCREMENT_CURRENT_BEAT: "INCREMENT_CURRENT_BEAT",
   DECREMENT_CURRENT_BEAT: "DECREMENT_CURRENT_BEAT",
@@ -20,6 +13,13 @@ export const BeatsActions = {
   ADD_BEAT: "ADD_BEAT",
   ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
+};
+
+const getNewBeat = (beat) => {
+  if (beat instanceof Beat)
+    return new Beat(beat.index + 1, beat.noteValue, new Set(beat.modifiers));
+
+  return new Beat(0);
 };
 
 export const beatsReducer = (state, action) => {
@@ -71,14 +71,12 @@ export const beatsReducer = (state, action) => {
       if (!beat) return state;
 
       beat.addModifier(action.modifier);
-      console.log("added modifier", action.modifier);
       return { ...state, beats: [...beats] };
     case BeatsActions.REMOVE_BEAT_MODIFIER:
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
 
       beat.removeModifier(action.modifier);
-      console.log("removed modifier", action.modifier);
       return { ...state, beats: [...beats] };
     default: {
       throw new Error(`Unsupported action type: ${action.type}`);
