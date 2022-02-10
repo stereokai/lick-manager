@@ -1,6 +1,6 @@
 import { AlphaTabApi, Settings } from "@coderline/alphatab";
 import { useEffect, useRef, useState } from "react";
-import { BeatsActions, useBeats } from "../Beats.jsx";
+import { BeatsActions, useBeats } from "../../Beats.jsx";
 import { beatsToAlphatex } from "./alphatabHelpers.js";
 import AlphatabOverlay from "./AlphatabOverlay.jsx";
 

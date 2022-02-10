@@ -1,8 +1,8 @@
-import Alphatab from "./Alphatab/Alphatab.jsx";
 import "./App.css";
 import { BeatsProvider } from "./Beats.jsx";
-import { Fretboard } from "./Fretboard/Fretboard.jsx";
-import Toolbar from "./Toolbar.jsx";
+import Alphatab from "./components/Alphatab";
+import Fretboard from "./components/Fretboard";
+import Toolbar from "./components/Toolbar.jsx";
 
 const App = () => (
   <div className="flex flex-col min-h-screen bg-red-300">

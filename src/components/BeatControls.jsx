@@ -1,7 +1,7 @@
-import { BeatsActions, useBeats } from "./Beats.jsx";
-import { NoteValues, RestValues, RhythmicModifiers } from "./models/Beat.js";
+import { BeatsActions, useBeats } from "../Beats.jsx";
+import { NoteValues, RestValues, RhythmicModifiers } from "../models/Beat.js";
 
-export const BeatControls = () => {
+const BeatControls = () => {
   const {
     dispatch,
     state: { currentBeat, beats },
@@ -82,3 +82,4 @@ export const BeatControls = () => {
     </div>
   );
 };
+export default BeatControls;

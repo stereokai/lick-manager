@@ -1,6 +1,6 @@
 import { Fretboard } from "@moonwave99/fretboard.js";
 import { useEffect, useReducer, useRef, useState } from "react";
-import { BeatsActions, useBeats } from "../Beats.jsx";
+import { BeatsActions, useBeats } from "../../Beats.jsx";
 import { DotsActions, dotsReducer } from "./dotsReducer.jsx";
 import { dedupeNotes } from "./fretboardHelpers.jsx";
 
