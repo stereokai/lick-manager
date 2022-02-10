@@ -5,7 +5,7 @@ const BeatsContext = createContext();
 
 const getNewBeat = (beat) => {
   if (beat instanceof Beat)
-    return new Beat(beat.index + 1, beat.noteValue, beat.modifiers);
+    return new Beat(beat.index + 1, beat.noteValue, new Set(beat.modifiers));
 
   return new Beat(0);
 };
