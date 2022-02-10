@@ -1,3 +1,8 @@
+import {
+  NoteValues,
+  RestValues,
+  RhythmicModifiers,
+} from "../models/BeatProperties.jsx";
 import { Note } from "./Note.js";
 import { NoteDurations } from "./NoteDurations.js";
 import { Notes } from "./Notes.js";
@@ -46,5 +51,21 @@ export class Beat {
 
   setValue(noteValue) {
     this.noteValue = noteValue;
+  }
+
+  getDuration() {
+    return (this.hasModifier(RhythmicModifiers.rest) ? RestValues : NoteValues)[
+      this.noteValue
+    ];
+  }
+
+  get tex() {
+    if (this.hasModifier(RhythmicModifiers.rest)) {
+      return `${RhythmicModifiers.rest.tex}.${this.getDuration().tex}`;
+    }
+
+    return `(${this.notes.immutable.map((note) => note.tex).join(" ")}).${
+      this.getDuration().tex
+    }`;
   }
 }
