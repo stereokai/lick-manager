@@ -2,11 +2,12 @@ import { Note } from "./Note.js";
 import { Notes } from "./Notes.js";
 
 export class Beat {
-  constructor(index, duration) {
+  constructor(index, noteValue) {
     this.index = index;
-    this.duration = duration;
+    this.noteValue = noteValue;
     this.notes = new Notes();
     this.strings = Array(6).fill(0);
+    this.modifiers = new Set();
   }
 
   addNote(note) {
@@ -28,5 +29,17 @@ export class Beat {
     this.strings[note.string - 1]--;
     this.notes.delete(note);
     return true;
+  }
+
+  addModifier(modifier) {
+    this.modifiers.add(modifier);
+  }
+
+  removeModifier(modifier) {
+    this.modifiers.delete(modifier);
+  }
+
+  setValue(noteValue) {
+    this.noteValue = noteValue;
   }
 }
