@@ -25,10 +25,12 @@ const BeatControls = () => {
     return beats[currentBeat].isRest;
   };
 
-  const getClassObject = (beatProperty, testFn) => {
-    return testBeat(beats[currentBeat], testFn, beatProperty)
-      ? "bg-purple-500"
-      : "";
+  const getButtonClass = (beatProperty, testFn, i, lastI) => {
+    return [
+      i === 0 ? "rounded-l" : "",
+      i === lastI ? "rounded-r" : "",
+      testBeat(beats[currentBeat], testFn, beatProperty) ? "bg-purple-500" : "",
+    ].join(" ");
   };
 
   const toggleModifier = (modifier) => {
@@ -44,14 +46,17 @@ const BeatControls = () => {
   return (
     <div className="flex bravura">
       <div className={`m-3 ${isRest() ? "rest" : "notes"}`}>
-        {Object.entries(getDurations()).map((keyValuePair, i) => {
+        {Object.entries(getDurations()).map((keyValuePair, i, arr) => {
+          console.log(i);
           const [valueName, noteValue] = keyValuePair;
           return (
             <button
               key={i}
-              className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getClassObject(
+              className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
                 valueName,
-                testDuration
+                testDuration,
+                i,
+                arr.length - 1
               )}`}
               onClick={() => {
                 dispatch({
@@ -66,12 +71,14 @@ const BeatControls = () => {
         })}
       </div>
       <div className="m-3">
-        {Object.values(RhythmicModifiers).map((modifier, i) => (
+        {Object.values(RhythmicModifiers).map((modifier, i, arr) => (
           <button
             key={i}
-            className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getClassObject(
+            className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
               modifier,
-              testModifier
+              testModifier,
+              i,
+              arr.length - 1
             )}`}
             onClick={() => toggleModifier(modifier)}
           >

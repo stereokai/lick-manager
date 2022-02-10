@@ -3,10 +3,7 @@ import { BeatsActions, useBeats } from "../Beats.jsx";
 import BeatControls from "./BeatControls.jsx";
 
 const Toolbar = () => {
-  const {
-    state: { currentBeat, beats },
-    dispatch,
-  } = useBeats();
+  const { dispatch } = useBeats();
 
   useHotkeys("left", () =>
     dispatch({ type: BeatsActions.DECREMENT_CURRENT_BEAT })
@@ -16,17 +13,20 @@ const Toolbar = () => {
   );
 
   return (
-    <div className="flex-col">
-      <BeatControls />
-      Current beat: {currentBeat + 1}, beats: {beats.length}
-      <button
-        className="m-1 px-3 py-1 rounded bg-purple-700 text-white"
-        onClick={() => dispatch({ type: BeatsActions.ADD_BEAT })}
-      >
-        Add Beat
-      </button>
-      <br />
-      Change beats with left and right keys or click, add notes via fretboard
+    <div className="flex flex-col">
+      <div className="flex flex-row">
+        <BeatControls />
+        <button
+          className="m-3 px-3 py-1 rounded bg-purple-700 text-white"
+          onClick={() => dispatch({ type: BeatsActions.ADD_BEAT })}
+        >
+          Add Beat
+        </button>
+      </div>
+      <p className="m-3">
+        Add notes via fretboard, change beats with left and right keys or by
+        clicking on tablature
+      </p>
     </div>
   );
 };
