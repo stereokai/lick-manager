@@ -11,8 +11,9 @@ export const BeatsActions = {
   INCREMENT_CURRENT_BEAT: "INCREMENT_CURRENT_BEAT",
   DECREMENT_CURRENT_BEAT: "DECREMENT_CURRENT_BEAT",
   SET_CURRENT_BEAT: "SET_CURRENT_BEAT",
-  SET_CURRENT_NOTEVALUE: "SET_CURRENT_NOTEVALUE",
   SET_BEAT_NOTEVALUE: "SET_BEAT_NOTEVALUE",
+  ADD_BEAT_MODIFIER: "ADD_BEAT_MODIFIER",
+  REMOVE_BEAT_MODIFIER: "REMOVE_BEAT_MODIFIER",
   ADD_BEAT: "ADD_BEAT",
   ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
@@ -57,11 +58,25 @@ export const beatsReducer = (state, action) => {
       }
       return state;
     case BeatsActions.SET_BEAT_NOTEVALUE:
-    case BeatsActions.SET_CURRENT_NOTEVALUE:
-      console.log(BeatsActions.SET_CURRENT_NOTEVALUE, action);
-      // set ui state
-      // change state of current beat (SET_BEAT_NOTEVALUE)
-      return { ...state, currentNoteValue: action.noteValue };
+      beat = beats[action.index || currentBeat];
+      if (!beat) return state;
+
+      beat.setValue(action.noteValue);
+      return { ...state, beats: [...beats] };
+    case BeatsActions.ADD_BEAT_MODIFIER:
+      beat = beats[action.index || currentBeat];
+      if (!beat) return state;
+
+      beat.addModifier(action.modifier);
+      console.log("added modifier", action.modifier);
+      return { ...state, beats: [...beats] };
+    case BeatsActions.REMOVE_BEAT_MODIFIER:
+      beat = beats[action.index || currentBeat];
+      if (!beat) return state;
+
+      beat.removeModifier(action.modifier);
+      console.log("removed modifier", action.modifier);
+      return { ...state, beats: [...beats] };
     default: {
       throw new Error(`Unsupported action type: ${action.type}`);
     }
@@ -71,7 +86,6 @@ export const beatsReducer = (state, action) => {
 export const BeatsProvider = (props) => {
   const [state, dispatch] = useReducer(beatsReducer, {
     beats: [getNewBeat(0)],
-    currentNoteValue: "quarter",
     currentBeat: 0,
     // beatControls:
   });
