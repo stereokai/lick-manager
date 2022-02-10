@@ -11,24 +11,25 @@ export const BeatControls = () => {
     state: { currentBeat, beats },
   } = useBeats();
 
-  const getDurations = () => {
-    const beat = beats[currentBeat];
+  const testBeat = (beat, testFn, testValue) => {
+    if (!beat || typeof testFn !== "function") return !!beat;
+    return testFn(beat, testValue);
+  };
+  // Test FNs:
+  const testDuration = (beat, noteValue) => beat.noteValue === noteValue;
+  const testModifier = (beat, modifier) => beat.hasModifier(modifier);
 
-    return beat && beat.hasModifier(RhythmicModifiers.rest)
+  const getDurations = () => {
+    return testBeat(beats[currentBeat], testModifier, RhythmicModifiers.rest)
       ? RestValues
       : NoteValues;
   };
 
-  const getClassObject = (beatProperty, test) => {
-    const beat = beats[currentBeat];
-
-    console.log(beat, beatProperty, test.toString());
-
-    return beat && test(beat, beatProperty) ? "bg-purple-500" : "";
+  const getClassObject = (beatProperty, testFn) => {
+    return testBeat(beats[currentBeat], testFn, beatProperty)
+      ? "bg-purple-500"
+      : "";
   };
-
-  const testDuration = (beat, noteValue) => beat.noteValue === noteValue;
-  const testModifier = (beat, modifier) => beat.hasModifier(modifier);
 
   const toggleModifier = (modifier) => {
     const beat = beats[currentBeat];
@@ -55,7 +56,7 @@ export const BeatControls = () => {
               onClick={() => {
                 dispatch({
                   type: BeatsActions.SET_BEAT_NOTEVALUE,
-                  valueName,
+                  noteValue: valueName,
                 });
               }}
             >
