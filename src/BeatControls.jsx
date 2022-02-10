@@ -25,6 +25,10 @@ export const BeatControls = () => {
       : NoteValues;
   };
 
+  const isRest = () => {
+    return beats[currentBeat].isRest;
+  };
+
   const getClassObject = (beatProperty, testFn) => {
     return testBeat(beats[currentBeat], testFn, beatProperty)
       ? "bg-purple-500"
@@ -42,8 +46,8 @@ export const BeatControls = () => {
   };
 
   return (
-    <>
-      <div className="flex bravura m-3">
+    <div className="flex bravura">
+      <div className={`m-3 ${isRest() ? "rest" : "notes"}`}>
         {Object.entries(getDurations()).map((keyValuePair, i) => {
           const [valueName, noteValue] = keyValuePair;
           return (
@@ -65,7 +69,7 @@ export const BeatControls = () => {
           );
         })}
       </div>
-      <div className="flex bravura m-3">
+      <div className="m-3">
         {Object.values(RhythmicModifiers).map((modifier, i) => (
           <button
             key={i}
@@ -79,6 +83,6 @@ export const BeatControls = () => {
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 };

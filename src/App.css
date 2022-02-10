@@ -14,14 +14,18 @@
 }
 
 .rhythms > button,
-.bravura > button {
+.bravura button {
   width: 3rem;
 }
 
-.bravura > button > span {
+.bravura button > span {
   display: block;
+}
+
+.bravura > .notes > button > span {
   transform: translateY(10px);
 }
+
 .App {
   text-align: center;
 }

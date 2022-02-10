@@ -54,9 +54,11 @@ export class Beat {
   }
 
   getDuration() {
-    return (this.hasModifier(RhythmicModifiers.rest) ? RestValues : NoteValues)[
-      this.noteValue
-    ];
+    return (this.isRest ? RestValues : NoteValues)[this.noteValue];
+  }
+
+  get isRest() {
+    return this.hasModifier(RhythmicModifiers.rest);
   }
 
   get tex() {
@@ -68,8 +70,7 @@ export class Beat {
 
     if (rhythmicModifiers) rhythmicModifiers = `{${rhythmicModifiers}}`;
 
-    console.log("rM", rhythmicModifiers, this.getDuration().tex);
-    if (this.hasModifier(RhythmicModifiers.rest)) {
+    if (this.isRest) {
       return `${RhythmicModifiers.rest.tex}.${
         this.getDuration().tex
       }${rhythmicModifiers}`;

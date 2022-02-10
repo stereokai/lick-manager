@@ -1,50 +1,20 @@
 import { useReducer } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 import Alphatab from "./Alphatab/Alphatab.jsx";
 import "./App.css";
-import { BeatControls } from "./BeatControls.jsx";
-import { BeatsActions, BeatsProvider, useBeats } from "./Beats.jsx";
+import { BeatsProvider } from "./Beats.jsx";
 import { dotsReducer } from "./Fretboard/dotsReducer.jsx";
 import { Fretboard } from "./Fretboard/Fretboard.jsx";
+import { Toolbar } from "./Toolbar.jsx";
 
 const App = () => {
   const [dots, setDots] = useReducer(dotsReducer, []);
 
-  function Display() {
-    const {
-      state: { currentBeat, beats },
-      dispatch,
-    } = useBeats();
-
-    useHotkeys("left", () =>
-      dispatch({ type: BeatsActions.DECREMENT_CURRENT_BEAT })
-    );
-    useHotkeys("right", () =>
-      dispatch({ type: BeatsActions.INCREMENT_CURRENT_BEAT })
-    );
-
-    return (
-      <div className="flex-shrink p-2">
-        <div className="flex-col text-center">
-          <BeatControls />
-        </div>
-        Current beat: {currentBeat + 1}, beats: {beats.length}
-        <button
-          className="m-1 px-3 py-1 rounded bg-purple-700 text-white"
-          onClick={() => dispatch({ type: BeatsActions.ADD_BEAT })}
-        >
-          Add Beat
-        </button>
-        <br />
-        Change beats with left and right keys
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-red-300">
       <BeatsProvider>
-        <Display />
+        <div className="flex-shrink p-2">
+          <Toolbar />
+        </div>
         <div className="flex-grow bg-white m-5">
           <Alphatab tex="true" tracks="all" />
         </div>
