@@ -1,3 +1,9 @@
+import {
+  NoteValues,
+  RestValues,
+  RhythmicModifiers,
+} from "../models/BeatProperties.jsx";
+
 export const OverlayType = {
   VisualBounds: 0,
   RealBounds: 1,
@@ -53,6 +59,24 @@ export function collectAlphaTabComponents(container, level, components = []) {
   return components;
 }
 
+const getNoteValues = (beat) => {
+  return beat.hasModifier(RhythmicModifiers.rest) ? RestValues : NoteValues;
+};
+
+const getBeatTex = (beat, i) => {
+  if (!beat) return "";
+  console.log(i, beat.index, beat.modifiers);
+  if (beat.hasModifier(RhythmicModifiers.rest)) {
+    return `${RhythmicModifiers.rest.tex}.${
+      getNoteValues(beat)[beat.noteValue].tex
+    }`;
+  }
+
+  return `(${beat.notes.immutable.map((note) => note.tex).join(" ")}).${
+    getNoteValues(beat)[beat.noteValue].tex
+  }`;
+};
+
 export const beatsToAlphatex = (beats) => {
   // TODO this is to avoid Alphatab throwing stupid errors
   if (!beats.length)
@@ -60,13 +84,9 @@ export const beatsToAlphatex = (beats) => {
 \\tempo 90
 .`;
 
-  const notes = beats
-    .map(
-      (beat) => `(${beat.notes.immutable.map((note) => note.tex).join(" ")})`
-    )
-    .join(" ");
+  const notes = beats.map(getBeatTex).join(" ");
 
   return `
 .
-:4 ${notes}`;
+${notes}`;
 };
