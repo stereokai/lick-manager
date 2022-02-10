@@ -15,6 +15,7 @@
 
 .rhythms > button,
 .bravura button {
+  overflow: hidden;
   width: 3rem;
 }
 
