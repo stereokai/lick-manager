@@ -2,12 +2,12 @@ import { Note } from "./Note.js";
 import { Notes } from "./Notes.js";
 
 export class Beat {
-  constructor(index, noteValue) {
+  constructor(index, noteValue = "quarter", modifiers = new Set()) {
     this.index = index;
     this.noteValue = noteValue;
     this.notes = new Notes();
     this.strings = Array(6).fill(0);
-    this.modifiers = new Set();
+    this.modifiers = modifiers;
   }
 
   addNote(note) {

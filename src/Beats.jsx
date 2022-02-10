@@ -3,8 +3,11 @@ import { Beat } from "./models/Beat.js";
 
 const BeatsContext = createContext();
 
-const getNewBeat = (index) => {
-  return new Beat(index);
+const getNewBeat = (beat) => {
+  if (beat instanceof Beat)
+    return new Beat(beat.index + 1, beat.noteValue, beat.modifiers);
+
+  return new Beat(0);
 };
 
 export const BeatsActions = {
@@ -27,9 +30,9 @@ export const beatsReducer = (state, action) => {
   switch (action.type) {
     case BeatsActions.INCREMENT_CURRENT_BEAT:
     case BeatsActions.ADD_BEAT:
-      if (!beats.length || action.type === BeatsActions.ADD_BEAT) {
-        beats = [...beats, getNewBeat(beats.length)];
-      }
+      if (action.type === BeatsActions.ADD_BEAT)
+        beats = [...beats, getNewBeat(beats[currentBeat])];
+
       return {
         ...state,
         beats,
@@ -85,9 +88,8 @@ export const beatsReducer = (state, action) => {
 
 export const BeatsProvider = (props) => {
   const [state, dispatch] = useReducer(beatsReducer, {
-    beats: [getNewBeat(0)],
+    beats: [getNewBeat()],
     currentBeat: 0,
-    // beatControls:
   });
   const value = useMemo(() => [state, dispatch], [state]);
   return <BeatsContext.Provider value={value} {...props} />;
