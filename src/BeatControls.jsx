@@ -1,9 +1,5 @@
 import { BeatsActions, useBeats } from "./Beats.jsx";
-import {
-  NoteValues,
-  RestValues,
-  RhythmicModifiers,
-} from "./models/BeatProperties.jsx";
+import { NoteValues, RestValues, RhythmicModifiers } from "./models/Beat.js";
 
 export const BeatControls = () => {
   const {

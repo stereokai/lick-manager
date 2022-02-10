@@ -1,14 +1,13 @@
-import {
-  NoteValues,
-  RestValues,
-  RhythmicModifiers,
-} from "../models/BeatProperties.jsx";
+import { BeatDurations } from "./BeatDurations.js";
 import { Note } from "./Note.js";
-import { NoteDurations } from "./NoteDurations.js";
 import { Notes } from "./Notes.js";
+import { NoteValues } from "./NoteValues.jsx";
+import { RestValues } from "./RestValues.jsx";
+import { RhythmicModifiers } from "./RhythmicModifiers.jsx";
 
+export { NoteValues, RestValues, RhythmicModifiers };
 export class Beat {
-  constructor(index, noteValue = NoteDurations.QUARTER, modifiers = new Set()) {
+  constructor(index, noteValue = BeatDurations.QUARTER, modifiers = new Set()) {
     this.index = index;
     this.noteValue = noteValue;
     this.notes = new Notes();

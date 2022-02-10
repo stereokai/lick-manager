@@ -1,4 +1,4 @@
-export const NoteDurations = {
+export const BeatDurations = {
   WHOLE: "whole",
   HALF: "half",
   QUARTER: "quarter",
