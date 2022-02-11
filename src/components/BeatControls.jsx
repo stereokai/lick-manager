@@ -1,4 +1,4 @@
-import { BeatsActions, useBeats } from "../Beats.jsx";
+import { BeatsActions, useBeats } from "@/routes/Beats.jsx";
 import { NoteValues, RestValues, RhythmicModifiers } from "../models/Beat.js";
 
 const BeatControls = () => {

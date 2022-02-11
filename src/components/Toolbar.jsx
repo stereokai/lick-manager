@@ -1,5 +1,5 @@
+import { BeatsActions, useBeats } from "@/routes/Beats.jsx";
 import { useHotkeys } from "react-hotkeys-hook";
-import { BeatsActions, useBeats } from "../Beats.jsx";
 import BeatControls from "./BeatControls.jsx";
 
 const Toolbar = () => {

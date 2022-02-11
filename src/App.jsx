@@ -1,6 +1,6 @@
+import { BeatsProvider } from "@/routes/Beats.jsx";
 import { Link } from "react-router-dom";
 import "./App.css";
-import { BeatsProvider } from "./Beats.jsx";
 import Alphatab from "./components/Alphatab";
 import Fretboard from "./components/Fretboard";
 import Toolbar from "./components/Toolbar.jsx";

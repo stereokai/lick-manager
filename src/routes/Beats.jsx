@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-import { Beat } from "./models/Beat.js";
+import { Beat } from "../models/Beat.js";
 
 const BeatsContext = createContext();
 
