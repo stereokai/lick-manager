@@ -6,9 +6,17 @@ export default {
       alias,
     },
   },
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   root: true,
   env: {
     browser: true,
+    es6: true,
   },
   plugins: ["import"],
   extends: [
@@ -28,12 +36,11 @@ export default {
   },
   overrides: [
     {
-      files: ["**/*.jsx"],
+      files: ["**/*.js", "**/*.jsx"],
       rules: {
         "react/prop-types": "off",
         "no-return-assign": "off",
         "no-unused-vars": "warn",
-        "no-var": "off",
       },
     },
   ],
