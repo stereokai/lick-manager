@@ -60,6 +60,14 @@ export class Beat {
     return this.hasModifier(RhythmicModifiers.rest);
   }
 
+  get immutable() {
+    return {
+      noteValue: this.noteValue,
+      notes: this.notes.immutable,
+      modifiers: Object.keys(this.modifiers),
+    };
+  }
+
   get tex() {
     let rhythmicModifiers = [...this.modifiers]
       .filter((m) => m !== RhythmicModifiers.rest)

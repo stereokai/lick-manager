@@ -47,7 +47,6 @@ const BeatControls = () => {
     <div className="flex bravura">
       <div className={`m-3 ${isRest() ? "rest" : "notes"}`}>
         {Object.entries(getDurations()).map((keyValuePair, i, arr) => {
-          console.log(i);
           const [valueName, noteValue] = keyValuePair;
           return (
             <button

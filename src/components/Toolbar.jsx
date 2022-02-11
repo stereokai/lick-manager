@@ -22,6 +22,12 @@ const Toolbar = () => {
         >
           Add Beat
         </button>
+        <button
+          className="m-3 px-3 py-1 rounded bg-blue-600 text-white"
+          onClick={() => dispatch({ type: BeatsActions.SAVE_BEAT })}
+        >
+          Save
+        </button>
       </div>
       <p className="m-3">
         Add notes via fretboard, change beats with left and right keys or by

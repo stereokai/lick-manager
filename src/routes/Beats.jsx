@@ -13,6 +13,7 @@ export const BeatsActions = {
   ADD_BEAT: "ADD_BEAT",
   ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
+  SAVE_BEAT: "SAVE_BEAT",
 };
 
 const getNewBeat = (beat) => {
@@ -28,6 +29,12 @@ export const beatsReducer = (state, action) => {
   let beat;
 
   switch (action.type) {
+    case BeatsActions.SAVE_BEAT:
+      console.log(
+        "beats",
+        state.beats.map((beat) => beat.immutable)
+      );
+      return state;
     case BeatsActions.INCREMENT_CURRENT_BEAT:
     case BeatsActions.ADD_BEAT:
       if (action.type === BeatsActions.ADD_BEAT)
