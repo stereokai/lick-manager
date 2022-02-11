@@ -1,9 +1,9 @@
-import { alias as viteAliases } from "./vite.config.js";
+import { aliasesForEslint as alias } from "./pathbroker.mjs";
 
 export default {
   settings: {
     "import/resolver": {
-      alias: Object.entries(viteAliases),
+      alias,
     },
   },
   root: true,
