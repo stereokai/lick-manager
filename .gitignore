@@ -2,7 +2,6 @@ dist
 dist-ssr
 *.local
 .idea/
-.vscode/
 build
 .DS_Store
 *.tgz
@@ -23,3 +22,7 @@ npm-debug.log*
 _node_modules
 .pnp.cjs
 .eslintcache
+
+# VSCode
+.vscode/settings.json
+.vscode/settings.local.json
