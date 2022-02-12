@@ -26,10 +26,6 @@ const BeatControls = () => {
       : NoteValues;
   };
 
-  const isRest = () => {
-    return beats[currentBeat].isRest;
-  };
-
   const getButtonClass = (beatProperty, testFn, i, lastI) => {
     return [
       i === 0 ? "rounded-l" : "",
@@ -52,7 +48,7 @@ const BeatControls = () => {
 
   return (
     <div className="flex bravura">
-      <div className={`m-3 ${isRest() ? "rest" : "notes"}`}>
+      <div className={`m-3 ${beats[currentBeat].isRest ? "rest" : "notes"}`}>
         {Object.entries(getDurations()).map((keyValuePair, i, arr) => {
           const [valueName, noteValue] = keyValuePair;
           return (
