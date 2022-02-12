@@ -11,6 +11,7 @@ export const BeatsActions = {
   ADD_BEAT_MODIFIER: "ADD_BEAT_MODIFIER",
   REMOVE_BEAT_MODIFIER: "REMOVE_BEAT_MODIFIER",
   ADD_BEAT: "ADD_BEAT",
+  REMOVE_BEAT: "REMOVE_BEAT",
   ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
   SAVE_BEAT: "SAVE_BEAT",
@@ -28,6 +29,9 @@ export const beatsReducer = (state, action) => {
   let { beats } = state;
   let beat;
 
+  const normalizeBeatIndex = (index) =>
+    Math.max(0, Math.min(index, beats.length - 1));
+
   switch (action.type) {
     case BeatsActions.SAVE_BEAT:
       console.log(
@@ -43,7 +47,21 @@ export const beatsReducer = (state, action) => {
       return {
         ...state,
         beats,
-        currentBeat: Math.min(currentBeat + 1, beats.length - 1),
+        currentBeat: normalizeBeatIndex(currentBeat - 1),
+      };
+    case BeatsActions.REMOVE_BEAT:
+      // eslint-disable-next-line no-case-declarations
+      let arr = [...beats];
+      if (beats.length > 1) {
+        arr.splice(typeof action.index === "number" || currentBeat, 1);
+      } else {
+        arr = [getNewBeat()];
+      }
+
+      return {
+        ...state,
+        beats: arr,
+        currentBeat: normalizeBeatIndex(currentBeat),
       };
     case BeatsActions.DECREMENT_CURRENT_BEAT:
       return { ...state, currentBeat: Math.max(currentBeat - 1, 0) };
