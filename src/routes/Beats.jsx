@@ -40,14 +40,18 @@ export const beatsReducer = (state, action) => {
       );
       return state;
     case BeatsActions.INCREMENT_CURRENT_BEAT:
+      return {
+        ...state,
+        currentBeat: normalizeBeatIndex(currentBeat + 1),
+      };
     case BeatsActions.ADD_BEAT:
-      if (action.type === BeatsActions.ADD_BEAT)
-        beats = [...beats, getNewBeat(beats[currentBeat])];
+      beats = [...beats];
+      beats.splice(currentBeat + 1, 0, getNewBeat(beats[currentBeat]));
 
       return {
         ...state,
         beats,
-        currentBeat: normalizeBeatIndex(currentBeat - 1),
+        currentBeat: currentBeat + 1,
       };
     case BeatsActions.REMOVE_BEAT:
       // eslint-disable-next-line no-case-declarations
@@ -64,7 +68,7 @@ export const beatsReducer = (state, action) => {
         currentBeat: normalizeBeatIndex(currentBeat),
       };
     case BeatsActions.DECREMENT_CURRENT_BEAT:
-      return { ...state, currentBeat: Math.max(currentBeat - 1, 0) };
+      return { ...state, currentBeat: normalizeBeatIndex(currentBeat - 1) };
     case BeatsActions.SET_CURRENT_BEAT:
       return { ...state, currentBeat: action.beat };
     case BeatsActions.ADD_NOTE_TO_CURRENT_BEAT:
