@@ -61,28 +61,28 @@ export class Beat {
   }
 
   get isRest() {
-    return this.hasModifier(RhythmicModifiers.rest) || !this.hasNotes;
+    return this.hasModifier(RhythmicModifiers.REST) || !this.hasNotes;
   }
 
   get immutable() {
     return {
       noteValue: this.noteValue,
-      notes: this.isRest ? [] : this.notes.immutable,
-      modifiers: Object.keys(this.modifiers),
+      notes: this.isRest ? [] : this.notes.immutable.map((note) => note.tex),
+      modifiers: [...this.modifiers],
     };
   }
 
   get tex() {
     let rhythmicModifiers = [...this.modifiers]
-      .filter((m) => m !== RhythmicModifiers.rest)
-      .map((m) => m.tex)
+      .filter((m) => m !== RhythmicModifiers.REST)
+      .map((m) => RhythmicModifiers[m].tex)
       .join(" ")
       .trim();
 
     if (rhythmicModifiers) rhythmicModifiers = `{${rhythmicModifiers}}`;
 
     if (this.isRest) {
-      return `${RhythmicModifiers.rest.tex}.${
+      return `${RhythmicModifiers[RhythmicModifiers.REST].tex}.${
         this.getDuration().tex
       }${rhythmicModifiers}`;
     }

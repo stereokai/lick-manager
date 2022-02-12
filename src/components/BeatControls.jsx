@@ -14,14 +14,14 @@ const BeatControls = () => {
   // Test FNs:
   const testDuration = (beat, noteValue) => beat.noteValue === noteValue;
   const testModifier = (beat, modifier) => {
-    if (modifier === RhythmicModifiers.rest && beat.isRest) {
+    if (modifier === RhythmicModifiers.REST && beat.isRest) {
       return true;
     }
     return beat.hasModifier(modifier);
   };
 
   const getDurations = () => {
-    return testBeat(beats[currentBeat], testModifier, RhythmicModifiers.rest)
+    return testBeat(beats[currentBeat], testModifier, RhythmicModifiers.REST)
       ? RestValues
       : NoteValues;
   };
@@ -77,20 +77,22 @@ const BeatControls = () => {
         })}
       </div>
       <div className="m-3">
-        {Object.values(RhythmicModifiers).map((modifier, i, arr) => (
-          <button
-            key={i}
-            className={`hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
-              modifier,
-              testModifier,
-              i,
-              arr.length - 1
-            )}`}
-            onClick={() => toggleModifier(modifier)}
-          >
-            <span>{modifier.codepoint}</span>
-          </button>
-        ))}
+        {Object.entries(RhythmicModifiers)
+          .filter(([modifierKey, modifier]) => typeof modifier !== "string")
+          .map(([modifierKey, modifier], i, arr) => (
+            <button
+              key={i}
+              className={`hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
+                modifierKey,
+                testModifier,
+                i,
+                arr.length - 1
+              )}`}
+              onClick={() => toggleModifier(modifierKey)}
+            >
+              <span>{modifier.codepoint}</span>
+            </button>
+          ))}
       </div>
     </div>
   );
