@@ -56,8 +56,12 @@ export class Beat {
     return (this.isRest ? RestValues : NoteValues)[this.noteValue];
   }
 
+  get hasNotes() {
+    return !!this.notes.size;
+  }
+
   get isRest() {
-    return this.hasModifier(RhythmicModifiers.rest);
+    return this.hasModifier(RhythmicModifiers.rest) || !this.hasNotes;
   }
 
   get immutable() {

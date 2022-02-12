@@ -30,7 +30,7 @@ export class Notes {
     return this.map.has(noteTex);
   }
 
-  size() {
+  get size() {
     return this.map.size;
   }
 

@@ -13,7 +13,12 @@ const BeatControls = () => {
   };
   // Test FNs:
   const testDuration = (beat, noteValue) => beat.noteValue === noteValue;
-  const testModifier = (beat, modifier) => beat.hasModifier(modifier);
+  const testModifier = (beat, modifier) => {
+    if (modifier === RhythmicModifiers.rest && beat.isRest) {
+      return true;
+    }
+    return beat.hasModifier(modifier);
+  };
 
   const getDurations = () => {
     return testBeat(beats[currentBeat], testModifier, RhythmicModifiers.rest)
@@ -29,7 +34,9 @@ const BeatControls = () => {
     return [
       i === 0 ? "rounded-l" : "",
       i === lastI ? "rounded-r" : "",
-      testBeat(beats[currentBeat], testFn, beatProperty) ? "bg-purple-500" : "",
+      testBeat(beats[currentBeat], testFn, beatProperty)
+        ? "bg-purple-500"
+        : "bg-purple-700",
     ].join(" ");
   };
 
@@ -51,7 +58,7 @@ const BeatControls = () => {
           return (
             <button
               key={i}
-              className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
+              className={`hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
                 valueName,
                 testDuration,
                 i,
@@ -73,7 +80,7 @@ const BeatControls = () => {
         {Object.values(RhythmicModifiers).map((modifier, i, arr) => (
           <button
             key={i}
-            className={`bg-purple-700 hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
+            className={`hover:bg-purple-300 text-white m-0 px-3 p-y1 ${getButtonClass(
               modifier,
               testModifier,
               i,
