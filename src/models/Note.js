@@ -21,6 +21,7 @@ export class Note {
 
 export const getTex = Note.getTex;
 Note.getTex = (note) => {
+  if (typeof note === "string") return note;
   return `${note.fret}.${note.string}`;
 };
 
