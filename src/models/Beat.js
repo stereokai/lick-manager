@@ -67,7 +67,7 @@ export class Beat {
   get immutable() {
     return {
       noteValue: this.noteValue,
-      notes: this.notes.immutable,
+      notes: this.isRest ? [] : this.notes.immutable,
       modifiers: Object.keys(this.modifiers),
     };
   }

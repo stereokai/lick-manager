@@ -5,11 +5,14 @@ const LicksContext = createContext();
 export const LicksActions = {};
 
 export const licksReducer = (state, action) => {
-  // switch (action.type) {}
+  switch (action.type) {
+    case "add":
+      return [...state, "new"];
+  }
 };
 
 export const LicksProvider = (props) => {
-  const [state, dispatch] = useReducer(licksReducer, {});
+  const [state, dispatch] = useReducer(licksReducer, []);
   const value = useMemo(() => [state, dispatch], [state]);
   return <LicksContext.Provider value={value} {...props} />;
 };
