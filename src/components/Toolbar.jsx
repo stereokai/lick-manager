@@ -5,12 +5,29 @@ import BeatControls from "./BeatControls.jsx";
 const Toolbar = () => {
   const { dispatch } = useBeats();
 
-  useHotkeys("left", () =>
-    dispatch({ type: BeatsActions.DECREMENT_CURRENT_BEAT })
+  useHotkeys("left", (e) => {
+    e.preventDefault();
+    dispatch({ type: BeatsActions.DECREMENT_CURRENT_BEAT });
+  });
+  useHotkeys("right", (e) => {
+    e.preventDefault();
+    dispatch({ type: BeatsActions.INCREMENT_CURRENT_BEAT });
+  });
+  useHotkeys(
+    "space",
+    (e) => {
+      e.preventDefault();
+      dispatch({ type: BeatsActions.ADD_BEAT });
+    },
+    {
+      filterPreventDefault: true,
+    },
+    () => false
   );
-  useHotkeys("right", () =>
-    dispatch({ type: BeatsActions.INCREMENT_CURRENT_BEAT })
-  );
+  useHotkeys("backspace", (e) => {
+    e.preventDefault();
+    dispatch({ type: BeatsActions.REMOVE_BEAT });
+  });
 
   return (
     <div className="flex flex-col">
@@ -30,8 +47,9 @@ const Toolbar = () => {
         </button>
       </div>
       <p className="m-3">
-        Add notes via fretboard, change beats with left and right keys or by
-        clicking on tablature
+        Add beats with <kbd>space</kbd>. Select beats with <kbd>left</kbd> and{" "}
+        <kbd>right</kbd> or by clicking on tablature. Add notes via fretboard.
+        Remove beats with <kbd>backspace</kbd>.
       </p>
     </div>
   );
