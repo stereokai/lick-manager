@@ -1,3 +1,4 @@
+import { db } from "@/db.js";
 import { createContext, useContext, useMemo, useReducer } from "react";
 import { Beat, RhythmicModifiers } from "../models/Beat.js";
 const BeatsContext = createContext();
@@ -33,10 +34,18 @@ export const beatsReducer = (state, action) => {
 
   switch (action.type) {
     case BeatsActions.SAVE_BEAT:
-      console.log(
-        "beats",
-        state.beats.map((beat) => beat.immutable)
-      );
+      // eslint-disable-next-line no-case-declarations
+      const save = state.beats
+        .map((beat) => beat.immutable)
+        .map((beat) =>
+          [beat.noteValue, beat.notes.join(","), beat.modifiers.join(",")].join(
+            "|"
+          )
+        )
+        .join("+");
+      console.log("beats", save);
+
+      db.licks.add({ beats: save });
       return state;
     case BeatsActions.INCREMENT_CURRENT_BEAT:
       return {
