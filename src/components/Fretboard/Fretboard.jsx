@@ -63,7 +63,7 @@ const FretboardJSX = () => {
         lastClick = setTimeout(() => {
           // setDots({ dot: position, type: DotsActions.ADD });
           dispatch({
-            type: BeatsActions.ADD_NOTE_TO_CURRENT_BEAT,
+            type: BeatsActions.ADD_NOTE_TO_BEAT,
             note: position,
           });
           lastClick = false;

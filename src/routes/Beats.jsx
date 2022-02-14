@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-import { Beat } from "../models/Beat.js";
-
+import { Beat, RhythmicModifiers } from "../models/Beat.js";
 const BeatsContext = createContext();
 
 export const BeatsActions = {
@@ -12,7 +11,7 @@ export const BeatsActions = {
   REMOVE_BEAT_MODIFIER: "REMOVE_BEAT_MODIFIER",
   ADD_BEAT: "ADD_BEAT",
   REMOVE_BEAT: "REMOVE_BEAT",
-  ADD_NOTE_TO_CURRENT_BEAT: "ADD_NOTE_TO_CURRENT_BEAT",
+  ADD_NOTE_TO_BEAT: "ADD_NOTE_TO_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
   SAVE_BEAT: "SAVE_BEAT",
 };
@@ -71,12 +70,15 @@ export const beatsReducer = (state, action) => {
       return { ...state, currentBeat: normalizeBeatIndex(currentBeat - 1) };
     case BeatsActions.SET_CURRENT_BEAT:
       return { ...state, currentBeat: action.beat };
-    case BeatsActions.ADD_NOTE_TO_CURRENT_BEAT:
+    case BeatsActions.ADD_NOTE_TO_BEAT:
       // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
       // have to create a new set to trigger React
       if (beat.addNote(action.note)) {
+        if (beat.hasModifier(RhythmicModifiers.REST)) {
+          beat.removeModifier(RhythmicModifiers.REST);
+        }
         return { ...state, beats: [...beats] };
       }
       return state;
