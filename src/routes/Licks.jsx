@@ -1,5 +1,6 @@
+import { db } from "@/db.js";
+import { useLiveQuery } from "dexie-react-hooks";
 import { createContext, useContext, useMemo, useReducer } from "react";
-
 const LicksContext = createContext();
 
 export const LicksActions = {};
@@ -31,5 +32,15 @@ export const useLicks = () => {
 };
 
 export default function Licks() {
-  return <main>Lick list</main>;
+  const licks = useLiveQuery(() => db.licks.toArray());
+
+  return (
+    <main className="p-4 bg-sky-400">
+      <ul>
+        {licks?.map((lick) => (
+          <li key={lick.id}>{lick.beats}</li>
+        ))}
+      </ul>
+    </main>
+  );
 }

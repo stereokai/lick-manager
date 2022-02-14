@@ -8,8 +8,12 @@ import Toolbar from "./components/Toolbar.jsx";
 const App = () => (
   <main className="flex flex-col min-h-screen bg-red-300">
     <nav className="flex p-3">
-      <Link to="/">Editor</Link>
-      <Link to="/links">Links</Link>
+      <Link className="mx-3" to="/">
+        Editor
+      </Link>
+      <Link className="mx-3" to="/licks">
+        Licks
+      </Link>
     </nav>
     <BeatsProvider>
       <div className="flex-shrink p-2">

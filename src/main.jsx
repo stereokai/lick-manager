@@ -10,7 +10,8 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="lick:lickId" element={<Licks />} />
+        {/* <Route path="lick:lickId" element={<Licks />} /> */}
+        <Route path="licks" element={<Licks />} />
         <Route
           path="*"
           element={
