@@ -26,12 +26,12 @@ Note.getTex = (note) => {
 };
 
 export const fromPosition = Note.fromPosition;
-Note.fromPosition = (position) => {
-  return new Note(position.fret, position.string);
+Note.fromPosition = (position, beatIndex) => {
+  return new Note(position.fret, position.string, beatIndex);
 };
 
 export const fromTex = Note.fromTex;
-Note.fromTex = (noteTex) => {
+Note.fromTex = (noteTex, beatIndex) => {
   noteTex = noteTex.split(".");
-  return new Note(noteTex[0], noteTex[1]);
+  return new Note(noteTex[0], noteTex[1], beatIndex);
 };

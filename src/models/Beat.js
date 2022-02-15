@@ -22,17 +22,26 @@ export class Beat {
   }
 
   addNote(note) {
+    if (!note) throw new Error("Can't add note, note is undefined");
+
     if (this.strings[note.string - 1]) {
       return false;
     }
 
-    const { fret, string } = note;
+    if (typeof note === "string") {
+      note = Note.fromTex(note, this.index);
+    } else {
+      note = Note.fromPosition(note, this.index);
+    }
+
     this.strings[note.string - 1]++;
-    this.notes.add(new Note(fret, string, this.index));
+    this.notes.add(note);
     return true;
   }
 
   removeNote(note) {
+    if (!note) throw new Error("Can't remove note, note is undefined");
+
     if (!this.notes.has(Note.getTex(note))) {
       return false;
     }

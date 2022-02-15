@@ -1,5 +1,5 @@
+import { Beat } from "@/models/Beat.js";
 import Dexie from "dexie";
-
 export const db = new Dexie("lickManager");
 db.version(1).stores({
   licks: "++id, beats", // Primary key and indexed props
@@ -22,4 +22,27 @@ export async function saveLick(lick) {
       )
       .join("+"),
   });
+}
+
+export async function getLicks() {
+  const rhythmicModifiers = [...Beat.initialModifierState.keys()];
+  let res = await db.licks.toArray();
+  res = res.map(({ beats }) =>
+    beats.split("+").reduce((beats, beatString, beatIndex) => {
+      const [noteValue, notesAsString, modifiersAsString] =
+        beatString.split("|");
+      const beat = new Beat(beatIndex, noteValue);
+      [...modifiersAsString].forEach((flag, i) => {
+        if (flag) beat.addModifier(rhythmicModifiers[i]);
+      });
+      notesAsString &&
+        notesAsString.split(",").forEach((note) => beat.addNote(note));
+      beat.beatString = beatString;
+      beats[beatIndex] = beat;
+      return beats;
+    }, [])
+  );
+
+  console.log(res);
+  return res;
 }

@@ -1,6 +1,6 @@
 import { saveLick } from "@/db.js";
 import { createContext, useContext, useMemo, useReducer } from "react";
-import { Beat, RhythmicModifiers } from "../models/Beat.js";
+import { Beat, RhythmicModifiers } from "@/models/Beat.js";
 const BeatsContext = createContext();
 
 export const BeatsActions = {
