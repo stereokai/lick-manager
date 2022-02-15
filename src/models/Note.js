@@ -1,9 +1,9 @@
 export class Note {
   constructor(fret, string, beat) {
-    this.fret = fret;
-    this.string = string;
+    this.fret = fret | 0;
+    this.string = string | 0;
     if (typeof beat !== "undefined") {
-      this.beat = beat;
+      this.beat = beat | 0;
     }
   }
 
