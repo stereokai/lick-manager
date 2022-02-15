@@ -5,14 +5,20 @@ import { NoteValues } from "./NoteValues.jsx";
 import { RestValues } from "./RestValues.jsx";
 import { RhythmicModifiers } from "./RhythmicModifiers.jsx";
 
+window.RhythmicModifiers = RhythmicModifiers;
+
 export { NoteValues, RestValues, RhythmicModifiers };
 export class Beat {
-  constructor(index, noteValue = BeatDurations.QUARTER, modifiers = new Set()) {
+  constructor(
+    index,
+    noteValue = BeatDurations.QUARTER,
+    modifiers = Beat.initialModifierState
+  ) {
     this.index = index;
     this.noteValue = noteValue;
     this.notes = new Notes();
     this.strings = Array(6).fill(0);
-    this.modifiers = modifiers;
+    this.modifiers = new Map(modifiers);
   }
 
   addNote(note) {
@@ -37,15 +43,15 @@ export class Beat {
   }
 
   addModifier(modifier) {
-    this.modifiers.add(modifier);
+    this.modifiers.set(modifier, 1);
   }
 
   removeModifier(modifier) {
-    this.modifiers.delete(modifier);
+    this.modifiers.set(modifier, 0);
   }
 
   hasModifier(modifier) {
-    return this.modifiers.has(modifier);
+    return this.modifiers.get(modifier) === 1;
   }
 
   setValue(noteValue) {
@@ -68,14 +74,18 @@ export class Beat {
     return {
       noteValue: this.noteValue,
       notes: this.isRest ? [] : this.notes.immutable.map((note) => note.tex),
-      modifiers: [...this.modifiers],
+      modifiers: Object.fromEntries(this.modifiers),
     };
   }
 
   get tex() {
-    let rhythmicModifiers = [...this.modifiers]
-      .filter((m) => m !== RhythmicModifiers.REST)
-      .map((m) => RhythmicModifiers[m].tex)
+    console.log([...Beat.initialModifierState.keys()]);
+    let rhythmicModifiers = [...Beat.initialModifierState.keys()]
+      .filter(
+        (modifier) =>
+          modifier !== RhythmicModifiers.REST && this.hasModifier(modifier)
+      )
+      .map((modifier) => RhythmicModifiers[modifier].tex)
       .join(" ")
       .trim();
 
@@ -92,3 +102,13 @@ export class Beat {
     }${rhythmicModifiers}`;
   }
 }
+
+Beat.copy = (beat) => {
+  return new Beat(beat.index + 1, beat.noteValue, beat.modifiers);
+};
+
+Beat.initialModifierState = new Map(
+  Object.values(RhythmicModifiers)
+    .filter((modifier) => typeof modifier === "string")
+    .map((modifier) => [modifier, 0])
+);

@@ -18,8 +18,7 @@ export const BeatsActions = {
 };
 
 const getNewBeat = (beat) => {
-  if (beat instanceof Beat)
-    return new Beat(beat.index + 1, beat.noteValue, new Set(beat.modifiers));
+  if (beat instanceof Beat) return Beat.copy(beat);
 
   return new Beat(0);
 };
@@ -38,9 +37,11 @@ export const beatsReducer = (state, action) => {
       const save = state.beats
         .map((beat) => beat.immutable)
         .map((beat) =>
-          [beat.noteValue, beat.notes.join(","), beat.modifiers.join(",")].join(
-            "|"
-          )
+          [
+            beat.noteValue,
+            beat.notes.join(","),
+            Object.values(beat.modifiers).join(""),
+          ].join("|")
         )
         .join("+");
       console.log("beats", save);
