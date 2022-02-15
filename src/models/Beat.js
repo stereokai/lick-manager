@@ -88,7 +88,6 @@ export class Beat {
   }
 
   get tex() {
-    console.log([...Beat.initialModifierState.keys()]);
     let rhythmicModifiers = [...Beat.initialModifierState.keys()]
       .filter(
         (modifier) =>

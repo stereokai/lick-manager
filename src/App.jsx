@@ -2,7 +2,7 @@ import { BeatsProvider } from "@/routes/Beats.jsx";
 import { Link } from "react-router-dom";
 import "./App.css";
 import Alphatab from "./components/Alphatab";
-import Fretboard from "./components/Fretboard";
+import { FretboardInteractive } from "./components/Fretboard";
 import Toolbar from "./components/Toolbar.jsx";
 
 const App = () => (
@@ -23,7 +23,7 @@ const App = () => (
         <Alphatab tex="true" tracks="all" />
       </div>
       <div className="flex-shrink bg-white m-5">
-        <Fretboard />
+        <FretboardInteractive />
       </div>
     </BeatsProvider>
   </main>

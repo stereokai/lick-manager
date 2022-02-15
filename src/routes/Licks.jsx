@@ -1,6 +1,8 @@
+import { Fretboard } from "@/components/Fretboard/Fretboard.jsx";
 import { getLicks } from "@/db.js";
 import { useLiveQuery } from "dexie-react-hooks";
 import { createContext, useContext, useMemo, useReducer } from "react";
+import { Link } from "react-router-dom";
 const LicksContext = createContext();
 
 export const LicksActions = {};
@@ -33,13 +35,18 @@ export const useLicks = () => {
 
 export default function Licks() {
   const licks = useLiveQuery(() => getLicks());
-
+  if (!licks) return null;
   return (
     <main className="p-4 bg-sky-400">
+      <Link className="m-3" to="/">
+        {"< Editor"}
+      </Link>
       <ul>
-        {/* {licks?.map((lick) => (
-          <li key={lick.id}>{lick.beats}</li>
-        ))} */}
+        {licks?.map((lick) => (
+          <li key={lick.id}>
+            <Fretboard beats={lick.beats} />
+          </li>
+        ))}
       </ul>
     </main>
   );
