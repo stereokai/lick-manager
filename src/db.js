@@ -26,23 +26,23 @@ export async function saveLick(lick) {
 
 export async function getLicks() {
   const rhythmicModifiers = [...Beat.initialModifierState.keys()];
-  let res = await db.licks.toArray();
-  res = res.map(({ beats }) =>
-    beats.split("+").reduce((beats, beatString, beatIndex) => {
+  const res = await db.licks.toArray();
+  return res.map(({ id, beats }) => ({
+    id,
+    beats: beats.split("+").reduce((beats, beatString, beatIndex) => {
       const [noteValue, notesAsString, modifiersAsString] =
         beatString.split("|");
       const beat = new Beat(beatIndex, noteValue);
       [...modifiersAsString].forEach((flag, i) => {
-        if (flag) beat.addModifier(rhythmicModifiers[i]);
+        if (flag | 0) {
+          beat.addModifier(rhythmicModifiers[i]);
+        }
       });
       notesAsString &&
         notesAsString.split(",").forEach((note) => beat.addNote(note));
       beat.beatString = beatString;
       beats[beatIndex] = beat;
       return beats;
-    }, [])
-  );
-
-  console.log(res);
-  return res;
+    }, []),
+  }));
 }
