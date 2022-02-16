@@ -53,5 +53,6 @@ export async function getLicks() {
 
 export async function getLick(id) {
   const res = await db.licks.get(id);
-  if (res) return lickMapper(res.beats);
+  if (res) return Promise.resolve(lickMapper(res.beats));
+  return Promise.reject(new Error(id));
 }

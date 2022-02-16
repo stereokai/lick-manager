@@ -1,14 +1,14 @@
 import { getLick, saveLick } from "@/db.js";
 import { Beat, RhythmicModifiers } from "@/models/Beat.js";
-import { useLiveQuery } from "dexie-react-hooks";
 import {
   createContext,
   useContext,
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const BeatsContext = createContext();
 
 export const BeatsActions = {
@@ -123,19 +123,38 @@ export const beatsReducer = (state, action) => {
 };
 
 export const BeatsProvider = (props) => {
-  const { lickId } = useParams();
-  const requestedLick = useLiveQuery(() => getLick(lickId | 0), []);
+  const navigate = useNavigate();
 
   const [state, dispatch] = useReducer(beatsReducer, {
     beats: getInitialState(),
     currentBeat: 0,
   });
 
+  const [requestedLick, setRequestedLick] = useState();
+  const { lickId } = useParams();
+
   useEffect(() => {
-    if (requestedLick) {
+    if (requestedLick)
       dispatch({ type: BeatsActions.LOAD_LICK, lick: requestedLick });
-    }
   }, [requestedLick]);
+
+  useEffect(() => {
+    let isSubscribed = true;
+
+    const fetchLick = async () => {
+      const lick = await getLick(lickId | 0);
+
+      if (isSubscribed && lick) {
+        setRequestedLick(lick);
+      }
+    };
+
+    fetchLick().catch(() => {
+      navigate("/lick/new");
+    });
+
+    return () => (isSubscribed = false);
+  }, [lickId, setRequestedLick]);
 
   const value = useMemo(() => [state, dispatch], [state]);
   return <BeatsContext.Provider value={value} {...props} />;
