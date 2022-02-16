@@ -2,7 +2,7 @@ import { Fretboard } from "@/components/Fretboard/Fretboard.jsx";
 import { getLicks } from "@/db.js";
 import { useLiveQuery } from "dexie-react-hooks";
 import { createContext, useContext, useMemo, useReducer } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigationType } from "react-router-dom";
 const LicksContext = createContext();
 
 export const LicksActions = {};
@@ -35,15 +35,28 @@ export const useLicks = () => {
 
 export default function Licks() {
   const licks = useLiveQuery(() => getLicks());
+  const navigate = useNavigate();
+  const navType = useNavigationType();
+
   if (!licks) return null;
   return (
     <main className="p-4 bg-sky-400">
-      <Link className="m-3" to="/">
-        {"< Editor"}
-      </Link>
+      {navType === "PUSH" ? (
+        <Link className="m-3" to={-1}>
+          {"< Editor"}
+        </Link>
+      ) : (
+        <Link className="m-3" to="/lick">
+          {"< Editor"}
+        </Link>
+      )}
       <ul>
         {licks?.map((lick) => (
-          <li key={lick.id}>
+          <li
+            className="lick"
+            key={lick.id}
+            onDoubleClick={() => navigate(`/lick/${lick.id}`)}
+          >
             <Fretboard beats={lick.beats} />
           </li>
         ))}
