@@ -1,9 +1,11 @@
+import { saveLick } from "@/db.js";
 import { BeatsActions, useBeats } from "@/routes/Beats.jsx";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useNavigate } from "react-router-dom";
 import BeatControls from "./BeatControls.jsx";
 
 const Toolbar = () => {
-  const { dispatch } = useBeats();
+  const { state, dispatch } = useBeats();
 
   useHotkeys("left", (e) => {
     e.preventDefault();
@@ -29,6 +31,16 @@ const Toolbar = () => {
     dispatch({ type: BeatsActions.REMOVE_BEAT });
   });
 
+  const navigate = useNavigate();
+  const saveLickAndUpdateURL = () => {
+    saveLick(state.beats)
+      .then((id) => {
+        navigate(`/lick/${id}`);
+        return id;
+      })
+      .catch(() => {});
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row">
@@ -41,7 +53,7 @@ const Toolbar = () => {
         </button>
         <button
           className="m-3 px-3 py-1 rounded bg-blue-600 text-white"
-          onClick={() => dispatch({ type: BeatsActions.SAVE_LICK })}
+          onClick={() => saveLickAndUpdateURL()}
         >
           Save
         </button>

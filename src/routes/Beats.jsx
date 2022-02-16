@@ -1,4 +1,4 @@
-import { getLick, saveLick } from "@/db.js";
+import { getLick } from "@/db.js";
 import { Beat, RhythmicModifiers } from "@/models/Beat.js";
 import {
   createContext,
@@ -22,7 +22,6 @@ export const BeatsActions = {
   REMOVE_BEAT: "REMOVE_BEAT",
   ADD_NOTE_TO_BEAT: "ADD_NOTE_TO_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
-  SAVE_LICK: "SAVE_LICK",
   LOAD_LICK: "LOAD_LICK",
 };
 
@@ -49,9 +48,6 @@ export const beatsReducer = (state, action) => {
         beats: action.lick,
         currentBeat: 0,
       };
-    case BeatsActions.SAVE_LICK:
-      saveLick(beats);
-      return state;
     case BeatsActions.INCREMENT_CURRENT_BEAT:
       return {
         ...state,
