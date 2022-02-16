@@ -2,8 +2,13 @@ import Alphatab from "@/components/Alphatab";
 import { FretboardInteractive } from "@/components/Fretboard";
 import Toolbar from "@/components/Toolbar.jsx";
 import { BeatsProvider } from "@/routes/Beats.jsx";
+import { useEffect } from "react";
 
 export default function LickEditor() {
+  useEffect(() => {
+    document.title = "Lick Editor";
+  }, []);
+
   return (
     <BeatsProvider>
       <div className="flex-shrink p-2">

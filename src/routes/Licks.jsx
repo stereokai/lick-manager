@@ -1,8 +1,15 @@
 import { Fretboard } from "@/components/Fretboard/Fretboard.jsx";
 import { getLicks } from "@/db.js";
 import { useLiveQuery } from "dexie-react-hooks";
-import { createContext, useContext, useMemo, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
 import { Link, useNavigate, useNavigationType } from "react-router-dom";
+
 const LicksContext = createContext();
 
 export const LicksActions = {};
@@ -37,6 +44,10 @@ export default function Licks() {
   const licks = useLiveQuery(() => getLicks());
   const navigate = useNavigate();
   const navType = useNavigationType();
+
+  useEffect(() => {
+    document.title = "Lick Library";
+  }, []);
 
   if (!licks) return null;
   return (
