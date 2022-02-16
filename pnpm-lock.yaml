@@ -20,6 +20,7 @@ specifiers:
   eslint-plugin-react: ~7.28.0
   eslint-plugin-react-hooks: ~4.3.0
   esm: ~3.2.25
+  history: ~5.2.0
   postcss: ~8.4.6
   react: ^17.0.2
   react-dom: ^17.0.2
@@ -54,6 +55,7 @@ devDependencies:
   eslint-plugin-react: 7.28.0_eslint@8.8.0
   eslint-plugin-react-hooks: 4.3.0_eslint@8.8.0
   esm: 3.2.25
+  history: 5.2.0
   postcss: 8.4.6
   tailwindcss: 3.0.22_autoprefixer@10.4.2
   vite: 2.8.1
@@ -304,7 +306,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.9
-    dev: false
 
   /@babel/template/7.16.7:
     resolution: {integrity: sha512-I8j/x8kHUrbYRTUxXrrMbfCa7jxkE7tZre39x3kjr9hvI82cK1FfqLygotcWN5kdPGWcLdWMHpSBavse5tWw3w==}
@@ -1822,7 +1823,6 @@ packages:
     resolution: {integrity: sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig==}
     dependencies:
       '@babel/runtime': 7.17.2
-    dev: false
 
   /hotkeys-js/3.8.7:
     resolution: {integrity: sha512-ckAx3EkUr5XjDwjEHDorHxRO2Kb7z6Z2Sxul4MbBkN8Nho7XDslQsgMJT+CiJ5Z4TgRxxvKHEpuLE3imzqy4Lg==}
@@ -2490,7 +2490,6 @@ packages:
 
   /regenerator-runtime/0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
-    dev: false
 
   /regexp.prototype.flags/1.4.1:
     resolution: {integrity: sha512-pMR7hBVUUGI7PMA37m2ofIdQCsomVnas+Jn5UPGAHQ+/LlwKm/aTLJHdasmHRzlfeZwHiAOaRSo2rbBDm3nNUQ==}
