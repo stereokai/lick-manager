@@ -1,6 +1,14 @@
-import { saveLick } from "@/db.js";
-import { createContext, useContext, useMemo, useReducer } from "react";
+import { getLick, saveLick } from "@/db.js";
 import { Beat, RhythmicModifiers } from "@/models/Beat.js";
+import { useLiveQuery } from "dexie-react-hooks";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
+import { useParams } from "react-router-dom";
 const BeatsContext = createContext();
 
 export const BeatsActions = {
@@ -15,6 +23,7 @@ export const BeatsActions = {
   ADD_NOTE_TO_BEAT: "ADD_NOTE_TO_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
   SAVE_BEAT: "SAVE_BEAT",
+  LOAD_LICK: "LOAD_LICK",
 };
 
 const getNewBeat = (beat) => {
@@ -32,6 +41,12 @@ export const beatsReducer = (state, action) => {
     Math.max(0, Math.min(index, beats.length - 1));
 
   switch (action.type) {
+    case BeatsActions.LOAD_LICK:
+      return {
+        ...state,
+        beats: action.lick,
+        currentBeat: 0,
+      };
     case BeatsActions.SAVE_BEAT:
       saveLick(beats);
       return state;
@@ -113,10 +128,20 @@ export const beatsReducer = (state, action) => {
 };
 
 export const BeatsProvider = (props) => {
+  const { lickId } = useParams();
+  const requestedLick = useLiveQuery(() => getLick(lickId | 0), []);
+
   const [state, dispatch] = useReducer(beatsReducer, {
     beats: [getNewBeat()],
     currentBeat: 0,
   });
+
+  useEffect(() => {
+    if (requestedLick) {
+      dispatch({ type: BeatsActions.LOAD_LICK, lick: requestedLick });
+    }
+  }, [requestedLick]);
+
   const value = useMemo(() => [state, dispatch], [state]);
   return <BeatsContext.Provider value={value} {...props} />;
 };
