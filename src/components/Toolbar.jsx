@@ -41,7 +41,7 @@ const Toolbar = () => {
         </button>
         <button
           className="m-3 px-3 py-1 rounded bg-blue-600 text-white"
-          onClick={() => dispatch({ type: BeatsActions.SAVE_BEAT })}
+          onClick={() => dispatch({ type: BeatsActions.SAVE_LICK })}
         >
           Save
         </button>

@@ -22,7 +22,7 @@ export const BeatsActions = {
   REMOVE_BEAT: "REMOVE_BEAT",
   ADD_NOTE_TO_BEAT: "ADD_NOTE_TO_BEAT",
   REMOVE_NOTE_FROM_CURRENT_BEAT: "REMOVE_NOTE_FROM_CURRENT_BEAT",
-  SAVE_BEAT: "SAVE_BEAT",
+  SAVE_LICK: "SAVE_LICK",
   LOAD_LICK: "LOAD_LICK",
 };
 
@@ -32,9 +32,11 @@ const getNewBeat = (beat) => {
   return new Beat(0);
 };
 
+const getInitialState = () => [getNewBeat()];
+
 export const beatsReducer = (state, action) => {
   const { currentBeat } = state;
-  let { beats } = state;
+  let beats = [...state.beats];
   let beat;
 
   const normalizeBeatIndex = (index) =>
@@ -47,7 +49,7 @@ export const beatsReducer = (state, action) => {
         beats: action.lick,
         currentBeat: 0,
       };
-    case BeatsActions.SAVE_BEAT:
+    case BeatsActions.SAVE_LICK:
       saveLick(beats);
       return state;
     case BeatsActions.INCREMENT_CURRENT_BEAT:
@@ -56,7 +58,6 @@ export const beatsReducer = (state, action) => {
         currentBeat: normalizeBeatIndex(currentBeat + 1),
       };
     case BeatsActions.ADD_BEAT:
-      beats = [...beats];
       beats.splice(currentBeat + 1, 0, getNewBeat(beats[currentBeat]));
 
       return {
@@ -65,17 +66,15 @@ export const beatsReducer = (state, action) => {
         currentBeat: currentBeat + 1,
       };
     case BeatsActions.REMOVE_BEAT:
-      // eslint-disable-next-line no-case-declarations
-      let arr = [...beats];
       if (beats.length > 1) {
-        arr.splice(typeof action.index === "number" || currentBeat, 1);
+        beats.splice(typeof action.index === "number" || currentBeat, 1);
       } else {
-        arr = [getNewBeat()];
+        beats = getInitialState();
       }
 
       return {
         ...state,
-        beats: arr,
+        beats,
         currentBeat: normalizeBeatIndex(currentBeat),
       };
     case BeatsActions.DECREMENT_CURRENT_BEAT:
@@ -83,24 +82,20 @@ export const beatsReducer = (state, action) => {
     case BeatsActions.SET_CURRENT_BEAT:
       return { ...state, currentBeat: action.beat };
     case BeatsActions.ADD_NOTE_TO_BEAT:
-      // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
-      // have to create a new set to trigger React
       if (beat.addNote(action.note)) {
         if (beat.hasModifier(RhythmicModifiers.REST)) {
           beat.removeModifier(RhythmicModifiers.REST);
         }
-        return { ...state, beats: [...beats] };
+        return { ...state, beats };
       }
       return state;
     case BeatsActions.REMOVE_NOTE_FROM_CURRENT_BEAT:
-      // eslint-disable-next-line no-case-declarations
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
-      // have to create a new set to trigger React
       if (beat.removeNote(action.note)) {
-        return { ...state, beats: [...beats] };
+        return { ...state, beats };
       }
       return state;
     case BeatsActions.SET_BEAT_NOTEVALUE:
@@ -108,19 +103,19 @@ export const beatsReducer = (state, action) => {
       if (!beat) return state;
 
       beat.setValue(action.noteValue);
-      return { ...state, beats: [...beats] };
+      return { ...state, beats };
     case BeatsActions.ADD_BEAT_MODIFIER:
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
 
       beat.addModifier(action.modifier);
-      return { ...state, beats: [...beats] };
+      return { ...state, beats };
     case BeatsActions.REMOVE_BEAT_MODIFIER:
       beat = beats[action.index || currentBeat];
       if (!beat) return state;
 
       beat.removeModifier(action.modifier);
-      return { ...state, beats: [...beats] };
+      return { ...state, beats };
     default: {
       throw new Error(`Unsupported action type: ${action.type}`);
     }
@@ -132,7 +127,7 @@ export const BeatsProvider = (props) => {
   const requestedLick = useLiveQuery(() => getLick(lickId | 0), []);
 
   const [state, dispatch] = useReducer(beatsReducer, {
-    beats: [getNewBeat()],
+    beats: getInitialState(),
     currentBeat: 0,
   });
 
